@@ -1,0 +1,21 @@
+/* Custom CSS hiệu ứng di chuột cho Trang Portal chính */
+.card-portal {
+    will-change: transform, box-shadow;
+}
+
+.card-portal:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.card-portal:nth-child(1):hover {
+    border-color: #10b981;
+}
+
+.card-portal:nth-child(2):hover {
+    border-color: #14b8a6;
+}
+
+.card-portal:nth-child(3):hover {
+    border-color: #06b6d4;
+}

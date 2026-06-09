@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程式碼英打速度測試器</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .char-correct { color: #22c55e; border-bottom: 2px solid #22c55e; }
+        .char-incorrect { color: #ef4444; background-color: rgba(239, 68, 68, 0.2); }
+        .char-current { border-bottom: 2px solid #22d4bf; animation: blink 1s infinite; }
+        @keyframes blink { 50% { border-color: transparent; } }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <a href="../index.html" class="inline-block mb-6 text-sm text-cyan-400 hover:underline">← 返回入口總覽</a>
+        
+        <h2 class="text-2xl md:text-3xl font-bold mb-6 text-cyan-400 border-b border-slate-800 pb-4">⌨️ 程式碼 JavaScript 盲打速度檢測</h2>
+
+        <div class="grid grid-cols-3 gap-4 mb-6">
+            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl text-center">
+                <span class="block text-xs text-slate-400 uppercase">剩餘時間</span>
+                <span id="timeLeft" class="text-xl md:text-2xl font-bold font-mono text-cyan-400">30</span>s
+            </div>
+            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl text-center">
+                <span class="block text-xs text-slate-400 uppercase">打字速度 (WPM)</span>
+                <span id="wpm" class="text-xl md:text-2xl font-bold font-mono text-cyan-400">0</span>
+            </div>
+            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl text-center">
+                <span class="block text-xs text-slate-400 uppercase">精準度</span>
+                <span id="accuracy" class="text-xl md:text-2xl font-bold font-mono text-cyan-400">100</span>%
+            </div>
+        </div>
+
+        <div id="textExample" class="bg-slate-950 p-6 rounded-xl border border-slate-800 font-mono text-lg tracking-wide leading-relaxed select-none mb-6 whitespace-pre-wrap break-all"></div>
+        <textarea id="textInput" placeholder="在此點擊並開始打字以啟動測驗..." class="w-full h-32 p-4 rounded-xl bg-slate-800 border border-slate-700 text-white font-mono focus:outline-none focus:border-cyan-400 transition-colors text-sm md:text-base resize-none" disabled></textarea>
+
+        <div class="mt-4 flex justify-end">
+            <button id="startTestBtn" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-6 py-2.5 rounded-xl transition-colors text-sm">開始/重置測驗</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

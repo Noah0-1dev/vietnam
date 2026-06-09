@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas 畫布 & QR Code 產生器</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        
+        <a href="../index.html" class="inline-block mb-6 text-sm text-emerald-400 hover:underline">← 返回入口總覽</a>
+        
+        <h2 class="text-2xl md:text-3xl font-bold mb-8 text-emerald-400 border-b border-slate-800 pb-4">🎨 Canvas 畫布與 QR Code 實用工具</h2>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-slate-800 p-6 rounded-2xl border border-slate-700 flex flex-col items-center">
+                <h3 class="text-lg font-semibold mb-4 self-start">線上智慧畫布</h3>
+                
+                <canvas id="paintCanvas" width="600" height="400" class="bg-white rounded-lg shadow-inner cursor-crosshair w-full border border-slate-600"></canvas>
+                
+                <div class="flex flex-wrap gap-4 mt-6 items-center justify-center w-full">
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm text-slate-400">顏色:</label>
+                        <input type="color" id="colorPicker" value="#000000" class="w-8 h-8 rounded cursor-pointer bg-transparent border-0">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm text-slate-400">粗細:</label>
+                        <input type="range" id="lineWidth" min="1" max="20" value="5" class="accent-emerald-500">
+                    </div>
+                    <button id="clearBtn" class="bg-rose-600 hover:bg-rose-500 px-4 py-2 text-sm font-bold rounded-xl transition-colors">清除畫布</button>
+                    <button id="downloadBtn" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-4 py-2 text-sm font-bold rounded-xl transition-colors">下載作品</button>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">✨ 創意 QR Code 產生器</h3>
+                    <p class="text-sm text-slate-400 mb-4">輸入任意網址或文字，即時轉換成專屬 QR Code 圖檔：</p>
+                    <input type="text" id="qrInput" placeholder="https://example.com" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-emerald-400 text-sm mb-4">
+                    <button id="genQrBtn" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 rounded-xl transition-colors text-sm">產生二維碼</button>
+                </div>
+                
+                <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-700 rounded-xl p-4 my-6 min-h-48 bg-slate-900/50">
+                    <div id="qrcode" class="p-2 bg-white rounded-lg hidden"></div>
+                    <p id="qrPlaceholder" class="text-slate-500 text-sm">暫無資料，請輸入網址產生</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
