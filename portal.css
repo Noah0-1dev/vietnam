@@ -1,21 +1,15 @@
-/* Custom CSS hiệu ứng di chuột cho Trang Portal chính */
-.card-portal {
-    will-change: transform, box-shadow;
+body {
+    background-color: #030712;
 }
 
-.card-portal:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+.card-glass {
+    background: rgba(15, 23, 42, 0.45);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
-.card-portal:nth-child(1):hover {
-    border-color: #10b981;
-}
-
-.card-portal:nth-child(2):hover {
-    border-color: #14b8a6;
-}
-
-.card-portal:nth-child(3):hover {
-    border-color: #06b6d4;
+.card-glass:hover {
+    transform: translateY(-6px);
+    background: rgba(15, 23, 42, 0.65);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px 0 rgba(0, 0, 0, 0.6);
 }

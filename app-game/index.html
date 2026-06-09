@@ -3,23 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>翻牌記憶對對碰遊戲</title>
+    <title>3D 記憶翻牌對對碰</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen p-4 md:p-8">
+<body class="bg-slate-950 text-slate-100 min-h-screen p-4 md:p-8">
     <div class="max-w-4xl mx-auto">
-        <a href="../index.html" class="inline-block mb-6 text-sm text-teal-400 hover:underline">← 返回入口總覽</a>
+        <a href="../index.html" class="inline-flex items-center text-sm text-emerald-400 hover:text-emerald-300 transition-colors mb-6">← 返回主入口總覽</a>
         
-        <h2 class="text-2xl md:text-3xl font-bold mb-6 text-teal-400 border-b border-slate-800 pb-4">🃏 翻牌記憶對對碰</h2>
-
-        <div class="flex justify-between items-center bg-slate-800 border border-slate-700 p-4 rounded-xl mb-6 text-sm md:text-base">
-            <div>⏱️ 時間: <span id="timer" class="font-mono font-bold text-teal-400">00:00</span></div>
-            <div>🔄 點擊次數: <span id="clicks" class="font-mono font-bold text-teal-400">0</span></div>
-            <button id="restartBtn" class="bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold px-4 py-1.5 rounded-lg transition-colors text-xs md:text-sm">重新開始</button>
+        <div class="bg-emerald-950/40 border border-emerald-500/20 rounded-2xl p-5 mb-8 text-sm text-slate-300 backdrop-blur-md">
+            <h4 class="font-bold text-emerald-400 text-base mb-2">💡 新手操作指南 (Quick Start)</h4>
+            <ul class="list-disc pl-5 space-y-1 text-xs md:text-sm text-slate-400">
+                <li><strong class="text-slate-200">核心玩法的:</strong> 畫面上共有 16 張卡牌（隱藏著 8 對相同的動物/昆蟲表情符號）。點擊任意卡牌可將其翻開。</li>
+                <li><strong class="text-slate-200">配對規則:</strong> 連續翻開兩張卡牌，若圖案相同則配對成功（卡牌變半透明）；若不同則會在 1 秒後自動翻回背面。用最短時間和最少次數翻開所有配對即獲勝！</li>
+            </ul>
         </div>
 
-        <div id="gameBoard" class="grid grid-cols-4 gap-3 md:gap-4 max-w-md mx-auto aspect-square"></div>
+        <div class="flex justify-between items-center bg-slate-900/80 border border-white/10 p-5 rounded-2xl mb-8 shadow-xl">
+            <div class="font-mono text-sm">⏱️ RUNTIME: <span id="timer" class="font-bold text-emerald-400 text-lg ml-1">00:00</span></div>
+            <div class="font-mono text-sm">🔄 CLICKS: <span id="clicks" class="font-bold text-emerald-400 text-lg ml-1">0</span></div>
+            <button id="restartBtn" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold px-5 py-2 rounded-xl text-xs md:text-sm shadow-md transition-all">重啟對局</button>
+        </div>
+
+        <div id="gameBoard" class="grid grid-cols-4 gap-3 md:gap-5 max-w-md mx-auto aspect-square p-2"></div>
     </div>
     <script src="script.js"></script>
 </body>

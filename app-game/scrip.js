@@ -13,9 +13,11 @@ window.addEventListener('DOMContentLoaded', () => {
     let isLocked = false;
 
     function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex != 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
         }
         return array;
     }
@@ -46,13 +48,13 @@ window.addEventListener('DOMContentLoaded', () => {
         timerDisplay.textContent = '00:00';
         stopTimer();
 
-        const shuffledEmojis = shuffle([...emojis]);
-        shuffledEmojis.forEach((emoji) => {
+        const shuffledList = shuffle([...emojis]);
+        shuffledList.forEach((emoji) => {
             const card = document.createElement('div');
             card.classList.add('card');
             card.innerHTML = `
-                <div class="card-inner w-full h-full">
-                    <div class="card-back">❓</div>
+                <div class="card-inner">
+                    <div class="card-back">🌀</div>
                     <div class="card-front">${emoji}</div>
                 </div>
             `;
@@ -68,10 +70,12 @@ window.addEventListener('DOMContentLoaded', () => {
         startTimer();
         card.classList.add('flipped');
         flippedCards.push(card);
+        
         clicks++;
         clicksDisplay.textContent = clicks;
 
         if (flippedCards.length === 2) {
+            isLocked = true; // Khóa click tạm thời khi đang kiểm tra cặp bài
             checkMatch();
         }
     }
@@ -86,17 +90,18 @@ window.addEventListener('DOMContentLoaded', () => {
             card2.classList.add('matched');
             flippedCards = [];
             matchedCount += 2;
+            isLocked = false;
+
             if (matchedCount === emojis.length) {
                 stopTimer();
-                setTimeout(() => alert(`🎉 恭喜通關！總共花費了 ${clicks} 次點擊，用時 ${timer} 秒。`), 500);
+                setTimeout(() => alert(`🎉 完美的記憶力！總共點擊 ${clicks} 次，耗時 ${timer} 秒破關！`), 400);
             }
         } else {
-            isLocked = true;
             setTimeout(() => {
                 card1.classList.remove('flipped');
                 card2.classList.remove('flipped');
                 flippedCards = [];
-                isLocked = false;
+                isLocked = false; // Mở khóa cho lượt chơi tiếp theo
             }, 1000);
         }
     }

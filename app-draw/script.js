@@ -10,14 +10,9 @@ window.addEventListener('DOMContentLoaded', () => {
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
-    function startPosition(e) {
-        painting = true;
-        draw(e);
-    }
-    function finishedPosition() {
-        painting = false;
-        ctx.beginPath();
-    }
+    function startPosition(e) { painting = true; draw(e); }
+    function finishedPosition() { painting = false; ctx.beginPath(); }
+    
     function draw(e) {
         if (!painting) return;
         ctx.strokeStyle = colorPicker.value;
@@ -39,42 +34,29 @@ window.addEventListener('DOMContentLoaded', () => {
     canvas.addEventListener('mousedown', startPosition);
     canvas.addEventListener('mouseup', finishedPosition);
     canvas.addEventListener('mousemove', draw);
-
     canvas.addEventListener('touchstart', startPosition);
     canvas.addEventListener('touchend', finishedPosition);
     canvas.addEventListener('touchmove', draw);
 
-    clearBtn.addEventListener('click', () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    });
-
+    clearBtn.addEventListener('click', () => ctx.clearRect(0, 0, canvas.width, canvas.height));
     downloadBtn.addEventListener('click', () => {
         const link = document.createElement('a');
-        link.download = 'my-canvas-artwork.png';
+        link.download = 'sketch.png';
         link.href = canvas.toDataURL();
         link.click();
     });
 
-    // QR Code
+    // QR
     const qrInput = document.getElementById('qrInput');
     const genQrBtn = document.getElementById('genQrBtn');
     const qrcodeContainer = document.getElementById('qrcode');
     const qrPlaceholder = document.getElementById('qrPlaceholder');
 
-    const qrcode = new QRCode(qrcodeContainer, {
-        width: 160,
-        height: 160,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
-    });
+    const qrcode = new QRCode(qrcodeContainer, { width: 160, height: 160, colorDark : "#000000", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H });
 
     genQrBtn.addEventListener('click', () => {
         const text = qrInput.value.trim();
-        if (text === '') {
-            alert('請輸入網址或文字！');
-            return;
-        }
+        if (!text) return alert('請先輸入內容！');
         qrcode.makeCode(text);
         qrcodeContainer.classList.remove('hidden');
         qrPlaceholder.classList.add('hidden');

@@ -3,63 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyApps 應用總覽入口</title>
+    <title>MyApps 智能應用虛擬入口</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="./css/portal.css">
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between font-sans">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between relative overflow-x-hidden font-sans">
 
-    <header class="py-10 text-center border-b border-slate-800 bg-slate-900/50 backdrop-blur">
-        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 to-teal-500 bg-clip-text text-transparent">
-            我的 MyApps 應用總覽
+    <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-purple-900/20 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-cyan-900/20 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <header class="py-12 text-center relative z-10">
+        <div class="inline-block px-4 py-1.5 mb-3 bg-slate-900/80 border border-slate-700/50 rounded-full text-xs text-cyan-400 font-mono tracking-widest uppercase shadow-lg backdrop-blur-md">
+            ✨ WEB INTELLIGENCE PORTFOLIO
+        </div>
+        <h1 class="text-4xl md:text-6xl font-black tracking-tight bg-gradient-to-r from-purple-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent uppercase">
+            MyApps 智能應用總覽
         </h1>
-        <p class="text-slate-400 mt-3 text-sm md:text-base">網頁智慧化程式 - 期末專題成果展現</p>
+        <p class="text-slate-400 mt-4 text-sm md:text-base font-light">網頁智慧化程式 - 期末專題全新改版成果展現</p>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-12 flex-grow w-full">
+    <main class="max-w-7xl mx-auto px-6 py-8 flex-grow w-full relative z-10">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             
-            <div class="card-portal bg-slate-800 rounded-2xl p-6 border border-slate-700 shadow-xl transition-all duration-300 group">
-                <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-400 mb-4 text-2xl group-hover:bg-emerald-500 group-hover:text-slate-900 transition-colors">
-                    🎨
-                </div>
-                <h3 class="text-xl font-bold text-slate-100">Canvas 畫布與 QR Code 產生器</h3>
-                <p class="text-slate-400 text-sm mt-3 h-12 line-clamp-2">
-                    結合 HTML5 Canvas 技術的線上數位畫布，支援自訂畫筆與一鍵下載；整合 QR Code 產生工具，提供便捷的實用整合。
-                </p>
-                <div class="mt-6 border-t border-slate-700/50 pt-4">
-                    <a href="./app-draw/index.html" class="inline-block w-full text-center bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 px-4 rounded-xl transition-colors">
-                        開啟頁面
+            <div class="card-glass group relative overflow-hidden rounded-3xl border border-white/10 p-8 backdrop-blur-xl transition-all duration-500">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                <div class="w-14 h-14 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl flex items-center justify-center text-3xl mb-6 border border-white/5 shadow-inner">🎨</div>
+                <h3 class="text-2xl font-bold tracking-tight text-white group-hover:text-purple-400 transition-colors">智能畫布 & 雲端快碼</h3>
+                <p class="text-slate-400 text-sm mt-3 leading-relaxed font-light">整合 HTML5 科技的互動式塗鴉畫布與即時高容錯率 QR Code 生成引擎，體現端對端實用工具整合。</p>
+                <div class="mt-8">
+                    <a href="./app-draw/index.html" class="flex items-center justify-center w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-medium py-3 rounded-2xl transition-all shadow-lg shadow-purple-900/30">
+                        進入應用系統
                     </a>
                 </div>
             </div>
 
-            <div class="card-portal bg-slate-800 rounded-2xl p-6 border border-slate-700 shadow-xl transition-all duration-300 group">
-                <div class="w-12 h-12 bg-teal-500/10 rounded-xl flex items-center justify-center text-teal-400 mb-4 text-2xl group-hover:bg-teal-500 group-hover:text-slate-900 transition-colors">
-                    🃏
-                </div>
-                <h3 class="text-xl font-bold text-slate-100">翻牌記憶對對碰遊戲</h3>
-                <p class="text-slate-400 text-sm mt-3 h-12 line-clamp-2">
-                    經典互動翻牌小遊戲，內建隨機洗牌演算法與點擊、時間計數器，具備流暢的 3D 翻轉視覺特效與勝負邏輯判定。
-                </p>
-                <div class="mt-6 border-t border-slate-700/50 pt-4">
-                    <a href="./app-game/index.html" class="inline-block w-full text-center bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold py-2.5 px-4 rounded-xl transition-colors">
-                        開始解謎
+            <div class="card-glass group relative overflow-hidden rounded-3xl border border-white/10 p-8 backdrop-blur-xl transition-all duration-500">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                <div class="w-14 h-14 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 rounded-2xl flex items-center justify-center text-3xl mb-6 border border-white/5 shadow-inner">🃏</div>
+                <h3 class="text-2xl font-bold tracking-tight text-white group-hover:text-emerald-400 transition-colors">3D 矩陣翻牌對對碰</h3>
+                <p class="text-slate-400 text-sm mt-3 leading-relaxed font-light">經典腦力記憶互動賽事，搭載高隨機性洗牌演算法、精準計時器與動態網格響應式配置。</p>
+                <div class="mt-8">
+                    <a href="./app-game/index.html" class="flex items-center justify-center w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-medium py-3 rounded-2xl transition-all shadow-lg shadow-emerald-900/30">
+                        啟動記憶矩陣
                     </a>
                 </div>
             </div>
 
-            <div class="card-portal bg-slate-800 rounded-2xl p-6 border border-slate-700 shadow-xl transition-all duration-300 group">
-                <div class="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center text-cyan-400 mb-4 text-2xl group-hover:bg-cyan-500 group-hover:text-slate-900 transition-colors">
-                    ⌨️
-                </div>
-                <h3 class="text-xl font-bold text-slate-100">程式碼英打速度測試器</h3>
-                <p class="text-slate-400 text-sm mt-3 h-12 line-clamp-2">
-                    數位學習與檢測工具。具備即時鍵盤輸入字元比對（正確綠字、錯誤紅字），並動態計算 WPM 速度與正確率。
-                </p>
-                <div class="mt-6 border-t border-slate-700/50 pt-4">
-                    <a href="./app-typing/index.html" class="inline-block w-full text-center bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-2.5 px-4 rounded-xl transition-colors">
-                        開始測驗
+            <div class="card-glass group relative overflow-hidden rounded-3xl border border-white/10 p-8 backdrop-blur-xl transition-all duration-500">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                <div class="w-14 h-14 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-2xl flex items-center justify-center text-3xl mb-6 border border-white/5 shadow-inner">⌨️</div>
+                <h3 class="text-2xl font-bold tracking-tight text-white group-hover:text-cyan-400 transition-colors">極速程式碼英打盲測</h3>
+                <p class="text-slate-400 text-sm mt-3 leading-relaxed font-light">專為工程師設計的即時語法英打檢測儀，能動態演算 WPM 速度與字符正確率誤差分析。</p>
+                <div class="mt-8">
+                    <a href="./app-typing/index.html" class="flex items-center justify-center w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-medium py-3 rounded-2xl transition-all shadow-lg shadow-cyan-900/30">
+                        開始極速挑戰
                     </a>
                 </div>
             </div>
@@ -67,8 +64,8 @@
         </div>
     </main>
 
-    <footer class="py-6 text-center border-t border-slate-800 text-slate-500 text-xs md:text-sm bg-slate-950">
-        © 2026 MyApps. All Rights Reserved. Powered by GitHub Pages.
+    <footer class="py-6 text-center border-t border-white/5 text-slate-500 text-xs md:text-sm bg-slate-950/80 relative z-10 backdrop-blur-sm">
+        © 2026 MyApps Labs. Designed with Cyber-Glassmorphism Concept.
     </footer>
 
     <script src="./js/portal.js"></script>
