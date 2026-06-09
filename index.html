@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Tên Của Bạn] 的 MyApps 應用總覽</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between font-sans">
+
+    <header class="py-10 text-center border-b border-slate-800 bg-slate-900/50 backdrop-blur">
+        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 to-teal-500 bg-clip-text text-transparent">
+            [Tên Của Bạn] 的 MyApps 應用總覽
+        </h1>
+        <p class="text-slate-400 mt-3 text-sm md:text-base">網頁智慧化程式 - 期末專題成果展現</p>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-12 flex-grow w-full">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:border-emerald-500 group">
+                <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-400 mb-4 text-2xl group-hover:bg-emerald-500 group-hover:text-slate-900 transition-colors">
+                    🎨
+                </div>
+                <h3 class="text-xl font-bold text-slate-100">Canvas 畫布與 QR Code 產生器</h3>
+                <p class="text-slate-400 text-sm mt-3 h-12 line-clamp-2">
+                    結合 HTML5 Canvas 技術的線上數位畫布，支援自訂畫筆與一鍵下載；整合 QR Code 產生工具，提供便捷的實用整合。
+                </p>
+                <div class="mt-6 border-t border-slate-700/50 pt-4">
+                    <a href="./app-draw/index.html" class="inline-block w-full text-center bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 px-4 rounded-xl transition-colors">
+                        開啟頁面
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:border-teal-500 group">
+                <div class="w-12 h-12 bg-teal-500/10 rounded-xl flex items-center justify-center text-teal-400 mb-4 text-2xl group-hover:bg-teal-500 group-hover:text-slate-900 transition-colors">
+                    🃏
+                </div>
+                <h3 class="text-xl font-bold text-slate-100">翻牌記憶對對碰遊戲</h3>
+                <p class="text-slate-400 text-sm mt-3 h-12 line-clamp-2">
+                    經典互動翻牌小遊戲，內建隨機洗牌演算法與點擊、時間計數器，具備流暢的 3D 翻轉視覺特效與勝負邏輯判定。
+                </p>
+                <div class="mt-6 border-t border-slate-700/50 pt-4">
+                    <a href="./app-game/index.html" class="inline-block w-full text-center bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold py-2.5 px-4 rounded-xl transition-colors">
+                        開始解謎
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:border-cyan-500 group">
+                <div class="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center text-cyan-400 mb-4 text-2xl group-hover:bg-cyan-500 group-hover:text-slate-900 transition-colors">
+                    ⌨️
+                </div>
+                <h3 class="text-xl font-bold text-slate-100">程式碼英打速度測試器</h3>
+                <p class="text-slate-400 text-sm mt-3 h-12 line-clamp-2">
+                    數位學習與檢測工具。具備即時鍵盤輸入字元比對（正確綠字、錯誤紅字），並動態計算 WPM 速度與正確率。
+                </p>
+                <div class="mt-6 border-t border-slate-700/50 pt-4">
+                    <a href="./app-typing/index.html" class="inline-block w-full text-center bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-2.5 px-4 rounded-xl transition-colors">
+                        開始測驗
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="py-6 text-center border-t border-slate-800 text-slate-500 text-xs md:text-sm bg-slate-950">
+        © 2026 [Tên Của Bạn]. All Rights Reserved. Powered by GitHub Pages.
+    </footer>
+
+</body>
+</html>
