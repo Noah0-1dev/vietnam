@@ -54,7 +54,7 @@ window.addEventListener('DOMContentLoaded', () => {
             card.classList.add('card');
             card.innerHTML = `
                 <div class="card-inner">
-                    <div class="card-back">🌀</div>
+                    <div class="card-back">❓</div>
                     <div class="card-front">${emoji}</div>
                 </div>
             `;
@@ -75,7 +75,7 @@ window.addEventListener('DOMContentLoaded', () => {
         clicksDisplay.textContent = clicks;
 
         if (flippedCards.length === 2) {
-            isLocked = true; // Khóa click tạm thời khi đang kiểm tra cặp bài
+            isLocked = true;
             checkMatch();
         }
     }
@@ -94,14 +94,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
             if (matchedCount === emojis.length) {
                 stopTimer();
-                setTimeout(() => alert(`🎉 完美的記憶力！總共點擊 ${clicks} 次，耗時 ${timer} 秒破關！`), 400);
+                setTimeout(() => alert(`🎉 恭喜破關！總點擊: ${clicks} 次，耗時: ${timer} 秒！`), 400);
             }
         } else {
             setTimeout(() => {
                 card1.classList.remove('flipped');
                 card2.classList.remove('flipped');
                 flippedCards = [];
-                isLocked = false; // Mở khóa cho lượt chơi tiếp theo
+                isLocked = false;
             }, 1000);
         }
     }
