@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>矩陣運算與進位轉換核心 - Binary & Computer Mathematics</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+      body {
+        transition:
+          background-color 0.4s ease,
+          color 0.3s ease;
+      }
+      /* ĐỒNG BỘ DARK MODE 100% VỚI HỆ THỐNG PORTFOLIO CỦA BẠN */
+      .dark-mode-active {
+        background-color: #020617 !important;
+        color: #f8fafc !important;
+      }
+      .dark-mode-active .bg-white {
+        background-color: #0f172a !important;
+        border-color: #1e293b !important;
+      }
+      .dark-mode-active h2,
+      .dark-mode-active h3,
+      .dark-mode-active h4 {
+        color: #ffffff !important;
+      }
+      .dark-mode-active input,
+      .dark-mode-active select {
+        background-color: #020617 !important;
+        border-color: #334155 !important;
+        color: #f1f5f9 !important;
+      }
+      .dark-mode-active #instructions {
+        background-color: rgba(30, 27, 75, 0.2) !important;
+        border-color: #312e81 !important;
+      }
+      .bit-btn {
+        transition: all 0.2s ease;
+      }
+    </style>
+
+    <script>
+      // Kiểm tra và đồng bộ trạng thái Dark Mode từ LocalStorage hệ thống
+      window.addEventListener("DOMContentLoaded", () => {
+        if (localStorage.getItem("theme_level3") === "dark") {
+          document.body.classList.add("dark-mode-active");
+        }
+      });
+    </script>
+  </head>
+  <body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8 antialiased">
+    <div class="max-w-6xl mx-auto">
+      <a
+        href="../index.html"
+        class="inline-flex items-center text-sm text-indigo-600 dark:text-indigo-400 font-bold mb-6 hover:underline"
+      >
+        ← 返回主入口總覽
+      </a>
+
+      <div
+        id="instructions"
+        class="bg-emerald-50/60 border border-emerald-200 rounded-2xl p-5 mb-8 text-xs md:text-sm text-slate-600 dark:text-slate-300 shadow-xs"
+      >
+        <h4
+          class="font-extrabold text-emerald-700 dark:text-emerald-400 block text-base mb-2 flex items-center gap-2"
+        >
+          <span>🧮</span> 電腦科學數學核心 - 進位轉換與位元運算指南
+        </h4>
+        <ul class="list-decimal pl-4 space-y-1.5 leading-relaxed">
+          <li>
+            <strong class="text-emerald-600 dark:text-emerald-400"
+              >跨進位即時轉換：</strong
+            >在左側輸入任意數值，並指定該數值的原始進位制（十進位、二進位、十六進位），系統會
+            100% 離線即時解算。
+          </li>
+          <li>
+            <strong class="text-emerald-600 dark:text-emerald-400"
+              >互動式位元運算（Bitwise）：</strong
+            >在右側區塊，您可以直接點擊按鈕來切換 8-Bit 的二進位數值（0 或
+            1），系統會動態計算出兩個位元組進行
+            <span
+              class="font-mono font-bold bg-slate-100 dark:bg-slate-800 px-1 rounded text-rose-500"
+              >AND</span
+            >、<span
+              class="font-mono font-bold bg-slate-100 dark:bg-slate-800 px-1 rounded text-amber-500"
+              >OR</span
+            >、<span
+              class="font-mono font-bold bg-slate-100 dark:bg-slate-800 px-1 rounded text-indigo-500"
+              >XOR</span
+            >
+            邏輯運算後的精確結果！
+          </li>
+        </ul>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div
+          class="bg-white border border-slate-200 p-6 rounded-3xl shadow-xl flex flex-col justify-between"
+        >
+          <div>
+            <h2
+              class="text-xl font-bold mb-6 flex items-center gap-2 text-slate-900"
+            >
+              ⚙️ 多元進位轉換矩陣
+            </h2>
+
+            <div class="space-y-4">
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-400 uppercase mb-1 tracking-wider"
+                  >選擇輸入進位制 / INPUT BASE</label
+                >
+                <select
+                  id="inputBase"
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                >
+                  <option value="10">十進位 / DEC (Base 10)</option>
+                  <option value="2">二進位 / BIN (Base 2)</option>
+                  <option value="16">十六進位 / HEX (Base 16)</option>
+                </select>
+              </div>
+
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-400 uppercase mb-1 tracking-wider"
+                  >輸入數值 / INPUT VALUE</label
+                >
+                <input
+                  type="text"
+                  id="inputValue"
+                  value="255"
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                />
+              </div>
+
+              <hr class="border-slate-100 dark:border-slate-800 my-4" />
+
+              <h3
+                class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2"
+              >
+                即時轉換結果 / REAL-TIME OUTPUT
+              </h3>
+
+              <div class="space-y-3">
+                <div
+                  class="bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-100 dark:border-slate-900"
+                >
+                  <span
+                    class="text-[10px] font-bold text-emerald-600 block mb-0.5"
+                    >十進位 / DECIMAL</span
+                  >
+                  <span id="outDec" class="font-mono text-sm font-bold"
+                    >255</span
+                  >
+                </div>
+                <div
+                  class="bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-100 dark:border-slate-900"
+                >
+                  <span
+                    class="text-[10px] font-bold text-amber-500 block mb-0.5"
+                    >二進位 / BINARY</span
+                  >
+                  <span id="outBin" class="font-mono text-sm font-bold"
+                    >11111111</span
+                  >
+                </div>
+                <div
+                  class="bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-100 dark:border-slate-900"
+                >
+                  <span
+                    class="text-[10px] font-bold text-indigo-500 block mb-0.5"
+                    >十六進位 / HEXADECIMAL</span
+                  >
+                  <span id="outHex" class="font-mono text-sm font-bold"
+                    >FF</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-[10px] text-slate-400 font-mono mt-4 text-center">
+            Pure JavaScript Real-time Compiler
+          </div>
+        </div>
+
+        <div
+          class="lg:col-span-2 bg-white border border-slate-200 p-6 rounded-3xl shadow-xl flex flex-col justify-between"
+        >
+          <div>
+            <h2
+              class="text-xl font-bold mb-6 flex items-center gap-2 text-slate-900"
+            >
+              📊 8-Bit 互動式位元邏輯運算核心
+            </h2>
+
+            <p class="text-xs text-slate-500 mb-6 leading-relaxed">
+              💡
+              <b>提示：</b>您可以直接點擊下方的藍色與紫色方塊來動態翻轉位元（0
+              變 1，1 變 0）。下方將自動聯動即時運算出邏輯門的輸出！
+            </p>
+
+            <div class="space-y-6">
+              <div>
+                <span
+                  class="text-xs font-bold text-indigo-600 dark:text-indigo-400 block mb-2"
+                  >位元組 A (Byte A)</span
+                >
+                <div
+                  id="byteAContainer"
+                  class="flex gap-1.5 md:gap-2 justify-between"
+                ></div>
+              </div>
+
+              <div>
+                <span
+                  class="text-xs font-bold text-purple-600 dark:text-purple-400 block mb-2"
+                  >位元組 B (Byte B)</span
+                >
+                <div
+                  id="byteBContainer"
+                  class="flex gap-1.5 md:gap-2 justify-between"
+                ></div>
+              </div>
+
+              <hr class="border-slate-100 dark:border-slate-800 my-4" />
+
+              <div>
+                <h3 class="text-sm font-bold mb-4 text-slate-700">
+                  位元邏輯門解算結果 (Bitwise Operations)
+                </h3>
+
+                <div class="space-y-3">
+                  <div
+                    class="flex items-center justify-between bg-slate-50 dark:bg-slate-950 px-4 py-3 rounded-xl border border-slate-100 dark:border-slate-900"
+                  >
+                    <div class="flex items-center gap-3">
+                      <span
+                        class="font-mono font-black text-xs bg-rose-100 text-rose-700 px-2 py-0.5 rounded"
+                        >AND</span
+                      >
+                      <span class="text-xs text-slate-400"
+                        >兩者皆為 1 則為 1</span
+                      >
+                    </div>
+                    <span
+                      id="resAnd"
+                      class="font-mono text-sm font-bold text-rose-600 tracking-widest"
+                      >00000000</span
+                    >
+                  </div>
+
+                  <div
+                    class="flex items-center justify-between bg-slate-50 dark:bg-slate-950 px-4 py-3 rounded-xl border border-slate-100 dark:border-slate-900"
+                  >
+                    <div class="flex items-center gap-3">
+                      <span
+                        class="font-mono font-black text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded"
+                        >OR</span
+                      >
+                      <span class="text-xs text-slate-400"
+                        >任一者為 1 則為 1</span
+                      >
+                    </div>
+                    <span
+                      id="resOr"
+                      class="font-mono text-sm font-bold text-amber-500 tracking-widest"
+                      >00000000</span
+                    >
+                  </div>
+
+                  <div
+                    class="flex items-center justify-between bg-slate-50 dark:bg-slate-950 px-4 py-3 rounded-xl border border-slate-100 dark:border-slate-900"
+                  >
+                    <div class="flex items-center gap-3">
+                      <span
+                        class="font-mono font-black text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded"
+                        >XOR</span
+                      >
+                      <span class="text-xs text-slate-400"
+                        >兩者互斥不同則為 1</span
+                      >
+                    </div>
+                    <span
+                      id="resXor"
+                      class="font-mono text-sm font-bold text-indigo-600 tracking-widest"
+                      >00000000</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="mt-6 p-4 bg-emerald-50/40 dark:bg-slate-900/40 border border-emerald-100/60 dark:border-slate-800 rounded-2xl text-xs text-slate-500 flex justify-between font-mono"
+          >
+            <span
+              >[Byte A:
+              <strong id="valADec" class="text-indigo-600">0</strong>]</span
+            >
+            <span
+              >[Byte B:
+              <strong id="valBDec" class="text-purple-600">0</strong>]</span
+            >
+            <span>[運算時脈: Real-time 0ms]</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        // === PHẦN 1: LOGIC CHUYỂN ĐỔI CƠ SỐ ===
+        const inputBase = document.getElementById("inputBase");
+        const inputValue = document.getElementById("inputValue");
+        const outDec = document.getElementById("outDec");
+        const outBin = document.getElementById("outBin");
+        const outHex = document.getElementById("outHex");
+
+        function convertBases() {
+          let val = inputValue.value.trim();
+          let base = parseInt(inputBase.value);
+
+          if (val === "") {
+            outDec.innerText = "-";
+            outBin.innerText = "-";
+            outHex.innerText = "-";
+            return;
+          }
+
+          try {
+            // Chuyển chuỗi đầu vào thành số thập phân gốc integer
+            let decimalVal = parseInt(val, base);
+
+            if (isNaN(decimalVal)) {
+              outDec.innerText = "輸入錯誤";
+              outBin.innerText = "輸入錯誤";
+              outHex.innerText = "輸入錯誤";
+              return;
+            }
+
+            // Xuất bản kết quả ra các hệ cơ số
+            outDec.innerText = decimalVal.toString(10);
+            outBin.innerText = decimalVal.toString(2).toUpperCase();
+            outHex.innerText = decimalVal.toString(16).toUpperCase();
+          } catch (e) {
+            console.error(e);
+          }
+        }
+
+        inputBase.addEventListener("change", convertBases);
+        inputValue.addEventListener("input", convertBases);
+        convertBases(); // Chạy khởi tạo lần đầu
+
+        // === PHẦN 2: LOGIC INTERACTIVE BITWISE ===
+        const byteAContainer = document.getElementById("byteAContainer");
+        const byteBContainer = document.getElementById("byteBContainer");
+        const resAnd = document.getElementById("resAnd");
+        const resOr = document.getElementById("resOr");
+        const resXor = document.getElementById("resXor");
+        const valADec = document.getElementById("valADec");
+        const valBDec = document.getElementById("valBDec");
+
+        // Khởi tạo mảng trạng thái 8 bit (mặc định là 00001111 và 01010101 cho trực quan)
+        let bitsA = [0, 0, 0, 0, 1, 1, 1, 1];
+        let bitsB = [0, 1, 0, 1, 0, 1, 0, 1];
+
+        // Hàm vẽ giao diện các nút bấm Bit
+        function renderBitFields() {
+          byteAContainer.innerHTML = "";
+          byteBContainer.innerHTML = "";
+
+          for (let i = 0; i < 8; i++) {
+            // Tạo nút cho chuỗi A
+            let btnA = document.createElement("button");
+            btnA.className = `bit-btn flex-1 aspect-square font-mono font-bold text-sm rounded-xl border text-center transition-all cursor-pointer ${bitsA[i] === 1 ? "bg-indigo-600 text-white border-indigo-700 shadow-xs" : "bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-400"}`;
+            btnA.innerText = bitsA[i];
+            btnA.addEventListener("click", () => {
+              bitsA[i] = bitsA[i] === 1 ? 0 : 1;
+              executeBitwise();
+            });
+            byteAContainer.appendChild(btnA);
+
+            // Tạo nút cho chuỗi B
+            let btnB = document.createElement("button");
+            btnB.className = `bit-btn flex-1 aspect-square font-mono font-bold text-sm rounded-xl border text-center transition-all cursor-pointer ${bitsB[i] === 1 ? "bg-purple-600 text-white border-purple-700 shadow-xs" : "bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-400"}`;
+            btnB.innerText = bitsB[i];
+            btnB.addEventListener("click", () => {
+              bitsB[i] = bitsB[i] === 1 ? 0 : 1;
+              executeBitwise();
+            });
+            byteBContainer.appendChild(btnB);
+          }
+        }
+
+        // Hàm giải toán Bitwise logic gates
+        function executeBitwise() {
+          renderBitFields(); // Vẽ lại giao diện nút màu tương ứng
+
+          let stringAnd = "";
+          let stringOr = "";
+          let stringXor = "";
+
+          // Duyệt mảng chạy toán tử logic từng cặp bit
+          for (let i = 0; i < 8; i++) {
+            let a = bitsA[i];
+            let b = bitsB[i];
+
+            stringAnd += a & b;
+            stringOr += a | b;
+            stringXor += a ^ b;
+          }
+
+          // Hiển thị chuỗi nhị phân kết quả
+          resAnd.innerText = stringAnd;
+          resOr.innerText = stringOr;
+          resXor.innerText = stringXor;
+
+          // Tính toán giá trị Thập phân tương ứng hiển thị dưới chân trang
+          let intA = parseInt(bitsA.join(""), 2);
+          let intB = parseInt(bitsB.join(""), 2);
+          valADec.innerText = intA;
+          valBDec.innerText = intB;
+        }
+
+        // Chạy khởi tạo tính toán bitwise lần đầu tiên
+        executeBitwise();
+      });
+    </script>
+  </body>
+</html>

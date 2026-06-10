@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>[NOAH]-MYAPPS 應用總覽 - Ultimate Edition</title>
+    <title>Web Intelligence Portfolio - 智能微應用生態系</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
@@ -13,276 +13,293 @@
           background-color 0.4s ease,
           color 0.3s ease;
       }
-
-      /* ĐỒNG BỘ DARK MODE CHẠY 100% */
+      /* Đồng bộ chế độ Dark Mode của hệ thống */
       .dark-mode-active {
         background-color: #020617 !important;
         color: #f8fafc !important;
       }
-      .dark-mode-active .bg-white {
+      .dark-mode-active .app-card {
         background-color: #0f172a !important;
         border-color: #1e293b !important;
-        color: #f8fafc !important;
       }
       .dark-mode-active h1,
-      .dark-mode-active h3,
-      .dark-mode-active h4 {
+      .dark-mode-active h3 {
         color: #ffffff !important;
       }
-      .dark-mode-active p {
-        color: #94a3b8 !important;
-      }
-      .dark-mode-active .text-slate-950 {
-        color: #f8fafc !important;
-      }
-
-      /* 💡 HIỆU ỨNG NỀN DI CHUYỂN CHẬM (ANIMATED GRADIENT MESH) */
-      @keyframes gradientBG {
-        0% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-        100% {
-          background-position: 0% 50%;
-        }
-      }
-      .animated-bg {
-        background: linear-gradient(
-          -45deg,
-          rgba(199, 210, 254, 0.3),
-          rgba(233, 213, 255, 0.3),
-          rgba(165, 243, 252, 0.3)
-        );
-        background-size: 400% 400%;
-        animation: gradientBG 15s ease infinite;
-      }
-      .dark-mode-active .animated-bg {
-        background: linear-gradient(
-          -45deg,
-          rgba(88, 28, 135, 0.15),
-          rgba(30, 27, 75, 0.2),
-          rgba(21, 94, 117, 0.15)
-        );
-        background-size: 400% 400%;
-      }
     </style>
-
-    <script>
-      window.addEventListener("DOMContentLoaded", () => {
-        if (localStorage.getItem("theme_level3") === "dark") {
-          document.body.classList.add("dark-mode-active");
-          document.getElementById("icon-dark").classList.add("hidden");
-          document.getElementById("icon-light").classList.remove("hidden");
-        }
-      });
-    </script>
   </head>
   <body
-    class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between font-sans relative overflow-x-hidden antialiased"
+    class="bg-slate-50 text-slate-800 min-h-screen antialiased transition-colors duration-300"
   >
-    <div
-      class="animated-bg absolute top-0 left-0 w-full h-[580px] -z-10 blur-2xl"
-    ></div>
-
-    <div
-      class="max-w-6xl mx-auto w-full px-6 pt-6 flex justify-between items-center relative z-20"
+    <header
+      class="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-50"
     >
       <div
-        class="flex items-center gap-2 font-mono text-xs font-bold tracking-wider text-slate-400"
+        class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between"
       >
-        <span
-          class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"
-        ></span>
-        SYSTEM: ACTIVE
-      </div>
-    </div>
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">🚀</span>
+          <span
+            class="font-black text-lg tracking-wider bg-gradient-to-r bg-clip-text text-transparent from-indigo-600 to-amber-500"
+          >
+            智慧化網頁程式
+          </span>
+        </div>
 
-    <header class="py-10 text-center relative z-10">
-      <div
-        class="inline-block px-4 py-1.5 mb-4 bg-white border border-slate-200 rounded-full text-xs text-indigo-600 font-mono tracking-widest uppercase shadow-xs"
-      >
-        ✨ WEB INTELLIGENCE PORTFOLIO
+        <button
+          id="themeToggleBtn"
+          class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer text-sm"
+        >
+          🌓 切換主題
+        </button>
       </div>
-      <h1
-        class="text-3xl md:text-5xl font-black tracking-tight text-slate-900 uppercase"
-      >
-        [NOAH]-MYAPPS 應用總覽
-      </h1>
-      <p class="text-slate-500 mt-3 text-sm md:text-base font-light">
-        網頁智慧化程式 - 期末專題全新改版成果展現
-      </p>
     </header>
 
-    <main class="max-w-6xl mx-auto px-6 py-2 flex-grow w-full relative z-10">
-      <div
-        class="bg-white/80 border border-slate-200 rounded-2xl p-5 mb-8 shadow-xs backdrop-blur-md"
-      >
-        <h4
-          class="font-bold text-slate-900 text-base mb-2 flex items-center gap-2"
+    <main class="max-w-6xl mx-auto px-4 py-12">
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span
+          class="text-xs font-bold uppercase tracking-widest bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 px-3 py-1.5 rounded-full mb-4 inline-block"
         >
-          <span>📖</span> 系統導覽與新手操作指南
-        </h4>
-        <p class="text-xs md:text-sm text-slate-600 leading-relaxed mb-2">
-          歡迎來到全新升級的雙模態智慧網頁系統！本入口整合了三個核心應用組件，可點擊右下角懸浮按鈕切換深色主題，請參閱下方的簡易說明進行操作：
+          MyApps 應用總覽
+        </span>
+        <h1
+          class="text-3xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight"
+        >
+          智能響應式微應用綜合模組平台
+        </h1>
+        <p
+          class="text-sm md:text-base text-slate-500 dark:text-slate-400 leading-relaxed"
+        >
+          本專案以現代化響應式 UI/UX
+          介面為核心，優化使用者地端操作體驗，建構出高效能的六大互動式微應用生態系。從創意設計到科學運算，全系統不依賴外部
+          API，展現流暢的純前端資料驅動與動態渲染技術。。
         </p>
-        <div
-          class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3 pt-3 border-t border-slate-100 text-xs text-slate-500"
-        >
-          <div>
-            <strong class="text-purple-600">🎨 畫布與 QR 碼：</strong>
-            支援滑鼠/觸控塗鴉，可一鍵導出畫作，並提供網址快速轉換為二維條碼。
-          </div>
-          <div>
-            <strong class="text-emerald-600">🃏 3D 翻牌遊戲：</strong>
-            經技術修復的穩定版本。支援多種難度切換，連續找出兩張相同圖案即可消除。
-          </div>
-          <div>
-            <strong class="text-cyan-600">⌨️ 英打盲測儀：</strong>
-            點擊開始後啟動 30 秒倒數，系統會精準計算您的 WPM 字數與輸入正確率。
-          </div>
-        </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div
-          class="bg-white rounded-3xl border border-slate-200 p-8 shadow-xl hover:shadow-2xl hover:shadow-purple-500/10 hover:-translate-y-2 transition-all duration-300 group flex flex-col justify-between relative overflow-hidden"
+          class="app-card bg-white border border-slate-200 p-6 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group"
         >
-          <span
-            class="absolute top-4 right-4 bg-purple-50 text-purple-600 text-[10px] font-bold px-2 py-0.5 rounded-md border border-purple-200"
-            >Tools</span
-          >
           <div>
-            <div
-              class="w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center text-3xl mb-6 border border-purple-100 shadow-xs"
-            >
-              🎨
+            <div class="flex items-center justify-between mb-4">
+              <div
+                class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform"
+              >
+                🎨
+              </div>
+              <span
+                class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 font-mono"
+                >CREATIVE / CANVAS</span
+              >
             </div>
-            <h3
-              class="text-xl font-bold tracking-tight text-slate-950 group-hover:text-purple-600 transition-colors"
-            >
-              智能畫布 & 雲端快碼
+            <h3 class="text-lg font-bold text-slate-900 mb-2">
+              智能畫布創作板
             </h3>
-            <p class="text-slate-500 text-sm mt-3 leading-relaxed font-light">
-              整合 HTML5 Canvas 科技的互動式塗鴉畫板，與高容錯率 QR Code
-              生成引擎。
+            <p
+              class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-6"
+            >
+              基於 HTML5 Canvas
+              技術開發的互動式繪圖板，支援多色彩選取、畫筆粗細調整與自定義畫布清理，提供流暢的線條渲染環境。
             </p>
           </div>
-          <div class="mt-8">
-            <a
-              href="./app-draw/index.html"
-              class="flex items-center justify-center w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 rounded-xl transition-all shadow-md shadow-purple-100"
-              >進入應用系統 →</a
-            >
-          </div>
+          <a
+            href="app-draw/index.html"
+            class="w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-sm"
+          >
+            開啟畫布中心 →
+          </a>
         </div>
 
         <div
-          class="bg-white rounded-3xl border border-slate-200 p-8 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/10 hover:-translate-y-2 transition-all duration-300 group flex flex-col justify-between relative overflow-hidden"
+          class="app-card bg-white border border-slate-200 p-6 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group"
         >
-          <span
-            class="absolute top-4 right-4 bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-md border border-emerald-200 animate-pulse"
-            >Multi-Level 🔥</span
-          >
           <div>
-            <div
-              class="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center text-3xl mb-6 border border-emerald-100 shadow-xs"
-            >
-              🃏
+            <div class="flex items-center justify-between mb-4">
+              <div
+                class="w-12 h-12 rounded-2xl bg-pink-50 dark:bg-pink-950/50 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform"
+              >
+                🎮
+              </div>
+              <span
+                class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-pink-100 text-pink-800 dark:bg-pink-950 dark:text-pink-300 font-mono"
+                >GAME / 3D EFFECT</span
+              >
             </div>
-            <h3
-              class="text-xl font-bold tracking-tight text-slate-950 group-hover:text-emerald-600 transition-colors"
+            <h3 class="text-lg font-bold text-slate-900 mb-2">3D 翻牌對對碰</h3>
+            <p
+              class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-6"
             >
-              3D 翻牌對對碰
-            </h3>
-            <p class="text-slate-500 text-sm mt-3 leading-relaxed font-light">
-              【已修復】經典腦力記憶互動賽事，搭載高隨機性洗牌演算法、精準計時器与多難度配置。
+              基於 CSS 3D 矩陣翻轉特效與 JavaScript
+              陣列隨機洗牌（Shuffle）演算法開發的記憶考驗遊戲，內建動態計時與配對邏輯。
             </p>
           </div>
-          <div class="mt-8">
-            <a
-              href="./app-game/index.html"
-              class="flex items-center justify-center w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3 rounded-xl transition-all shadow-md shadow-emerald-100"
-              >啟動記憶矩陣 →</a
-            >
-          </div>
+          <a
+            href="app-card/index.html"
+            class="w-full text-center bg-pink-600 hover:bg-pink-700 text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-sm"
+          >
+            進入遊戲網域 →
+          </a>
         </div>
 
         <div
-          class="bg-white rounded-3xl border border-slate-200 p-8 shadow-xl hover:shadow-2xl hover:shadow-cyan-500/10 hover:-translate-y-2 transition-all duration-300 group flex flex-col justify-between relative overflow-hidden"
+          class="app-card bg-white border border-slate-200 p-6 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group"
         >
-          <span
-            class="absolute top-4 right-4 bg-cyan-50 text-cyan-600 text-[10px] font-bold px-2 py-0.5 rounded-md border border-cyan-200"
-            >30s Speed</span
-          >
           <div>
-            <div
-              class="w-14 h-14 bg-cyan-50 rounded-2xl flex items-center justify-center text-3xl mb-6 border border-cyan-100 shadow-xs"
-            >
-              ⌨️
+            <div class="flex items-center justify-between mb-4">
+              <div
+                class="w-12 h-12 rounded-2xl bg-cyan-50 dark:bg-cyan-950/50 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform"
+              >
+                ⌨️
+              </div>
+              <span
+                class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-800 dark:bg-cyan-950 dark:text-cyan-300 font-mono"
+                >UTILITY / SPEED TEST</span
+              >
             </div>
-            <h3
-              class="text-xl font-bold tracking-tight text-slate-950 group-hover:text-cyan-600 transition-colors"
-            >
+            <h3 class="text-lg font-bold text-slate-900 mb-2">
               極速程式碼英打盲測
             </h3>
-            <p class="text-slate-500 text-sm mt-3 leading-relaxed font-light">
-              專為工程師設計的即時語法英打檢測儀，能動態演算 WPM
-              速度與字符正確率。
+            <p
+              class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-6"
+            >
+              針對工程師設計的英打盲測模組。即時捕捉鍵盤事件，精確計算每分鐘字數
+              (WPM) 與輸入正確率，並具備文字即時動態著色回饋。
             </p>
           </div>
-          <div class="mt-8">
-            <a
-              href="./app-typing/index.html"
-              class="flex items-center justify-center w-full bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-3 rounded-xl transition-all shadow-md shadow-cyan-100"
-              >開始極速挑戰 →</a
+          <a
+            href="app-typer/index.html"
+            class="w-full text-center bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-sm"
+          >
+            開啟盲測核心 →
+          </a>
+        </div>
+
+        <div
+          class="app-card bg-white border border-slate-200 p-6 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group"
+        >
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div
+                class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/50 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform"
+              >
+                🏋️
+              </div>
+              <span
+                class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300 font-mono"
+                >HEALTH / SCIENCE</span
+              >
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2">
+              智慧體態與熱量管理核心
+            </h3>
+            <p
+              class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-6"
             >
+              基於 Mifflin-St Jeor 科學公式，免聯網計算 BMI、BMR 與 TDEE
+              每日總消耗量，並針對增肌減脂戰略自動配置三大營養素之黃金克數。
+            </p>
           </div>
+          <a
+            href="app-gym/index.html"
+            class="w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-sm"
+          >
+            啟動智能管理板 →
+          </a>
+        </div>
+
+        <div
+          class="app-card bg-white border border-slate-200 p-6 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group"
+        >
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div
+                class="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform"
+              >
+                🧮
+              </div>
+              <span
+                class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-mono"
+                >MATH / BINARY</span
+              >
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2">
+              矩陣運算與進位轉換核心
+            </h3>
+            <p
+              class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-6"
+            >
+              專為電腦科學打造的數學解算器。支援十進位、二進位、十六進位線上即時轉換，並提供
+              8-Bit 互動式位元邏輯門（AND, OR, XOR）動態運算。
+            </p>
+          </div>
+          <a
+            href="app-binary/index.html"
+            class="w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-sm"
+          >
+            開啟數學核心 →
+          </a>
+        </div>
+
+        <div
+          class="app-card bg-white border border-slate-200 p-6 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group"
+        >
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div
+                class="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/50 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform"
+              >
+                🍳
+              </div>
+              <span
+                class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-800 dark:bg-orange-950 dark:text-orange-300 font-mono"
+                >CULINARY / SCALE</span
+              >
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2">
+              智慧烘焙與廚藝計量換算核心
+            </h3>
+            <p
+              class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-6"
+            >
+              內建烘焙百分比等比縮放算法，動態聯動原物料克數。並支援美制單位（量杯、大匙、小匙）至公制克與毫升的物理密度精確換算。
+            </p>
+          </div>
+          <a
+            href="app-food/index.html"
+            class="w-full text-center bg-orange-600 hover:bg-orange-700 text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-sm"
+          >
+            開啟廚藝核心 →
+          </a>
         </div>
       </div>
     </main>
 
     <footer
-      class="py-6 text-center border-t border-slate-200 text-slate-400 text-xs mt-12 bg-white"
+      class="border-t border-slate-200 dark:border-slate-800 mt-20 py-6 text-center text-xs text-slate-400 font-mono"
     >
-      © 2026 MyApps Labs.阮文南_.1113211502.
+      © 2026 Web Intelligence Client-Side App Matrix. All Rights Reserved.
     </footer>
 
-    <button
-      id="themeToggle"
-      class="fixed bottom-6 right-6 z-50 bg-white border border-slate-200 text-slate-800 px-4 py-3 rounded-full shadow-xl hover:shadow-2xl cursor-pointer hover:scale-110 active:scale-95 transition-all text-sm font-semibold flex items-center gap-2 backdrop-blur-md"
-    >
-      <span id="icon-dark" class="flex items-center gap-1.5"
-        >🌙 <span>Go Dark</span></span
-      >
-      <span
-        id="icon-light"
-        class="hidden flex items-center gap-1.5 text-amber-400"
-        >☀️
-        <span class="text-slate-800 dark:text-slate-200">Go Light</span></span
-      >
-    </button>
-
     <script>
-      const themeToggle = document.getElementById("themeToggle");
-      const iconDark = document.getElementById("icon-dark");
-      const iconLight = document.getElementById("icon-light");
+      window.addEventListener("DOMContentLoaded", () => {
+        const themeToggleBtn = document.getElementById("themeToggleBtn");
 
-      function toggleTheme() {
-        if (document.body.classList.contains("dark-mode-active")) {
-          document.body.classList.remove("dark-mode-active");
-          iconDark.classList.remove("hidden");
-          iconLight.classList.add("hidden");
-          localStorage.setItem("theme_level3", "light");
-        } else {
+        // Kiểm tra trạng thái lưu sẵn từ trước trong máy người dùng
+        if (localStorage.getItem("theme_level3") === "dark") {
           document.body.classList.add("dark-mode-active");
-          iconDark.classList.add("hidden");
-          iconLight.classList.remove("hidden");
-          localStorage.setItem("theme_level3", "dark");
         }
-      }
-      themeToggle.addEventListener("click", toggleTheme);
+
+        // Lắng nghe sự kiện click nút để đảo trạng thái Dark / Light Mode
+        themeToggleBtn.addEventListener("click", () => {
+          if (document.body.classList.contains("dark-mode-active")) {
+            document.body.classList.remove("dark-mode-active");
+            localStorage.setItem("theme_level3", "light");
+          } else {
+            document.body.classList.add("dark-mode-active");
+            localStorage.setItem("theme_level3", "dark");
+          }
+        });
+      });
     </script>
   </body>
 </html>

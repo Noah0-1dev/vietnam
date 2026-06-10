@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智慧烘焙與廚藝計量換算核心 - Culinary Intelligence</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+      body {
+        transition:
+          background-color 0.4s ease,
+          color 0.3s ease;
+      }
+      /* ĐỒNG BỘ DARK MODE 100% VỚI HỆ THỐNG PORTFOLIO CỦA BẠN */
+      .dark-mode-active {
+        background-color: #020617 !important;
+        color: #f8fafc !important;
+      }
+      .dark-mode-active .bg-white {
+        background-color: #0f172a !important;
+        border-color: #1e293b !important;
+      }
+      .dark-mode-active h2,
+      .dark-mode-active h3,
+      .dark-mode-active h4 {
+        color: #ffffff !important;
+      }
+      .dark-mode-active input,
+      .dark-mode-active select {
+        background-color: #020617 !important;
+        border-color: #334155 !important;
+        color: #f1f5f9 !important;
+      }
+      .dark-mode-active #instructions {
+        background-color: rgba(30, 27, 75, 0.2) !important;
+        border-color: #312e81 !important;
+      }
+    </style>
+
+    <script>
+      // Kiểm tra và đồng bộ trạng thái Dark Mode từ LocalStorage hệ thống
+      window.addEventListener("DOMContentLoaded", () => {
+        if (localStorage.getItem("theme_level3") === "dark") {
+          document.body.classList.add("dark-mode-active");
+        }
+      });
+    </script>
+  </head>
+  <body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8 antialiased">
+    <div class="max-w-6xl mx-auto">
+      <a
+        href="../index.html"
+        class="inline-flex items-center text-sm text-orange-600 dark:text-orange-400 font-bold mb-6 hover:underline"
+      >
+        ← 返回主入口總覽
+      </a>
+
+      <div
+        id="instructions"
+        class="bg-orange-50/60 border border-orange-200 rounded-2xl p-5 mb-8 text-xs md:text-sm text-slate-600 dark:text-slate-300 shadow-xs"
+      >
+        <h4
+          class="font-extrabold text-orange-700 dark:text-orange-400 block text-base mb-2 flex items-center gap-2"
+        >
+          <span>🍳</span> 智慧烘焙與廚藝計量核心 - 烘焙百分比與單位換算指南
+        </h4>
+        <ul class="list-decimal pl-4 space-y-1.5 leading-relaxed">
+          <li>
+            <strong class="text-orange-600 dark:text-orange-400"
+              >烘焙配方等比縮放（左側）：</strong
+            >輸入原始配方（以麵粉量為 100%
+            基準），當您調整期望的「麵粉總重量」時，系統會自動利用烘焙百分比算法，即時算出水、酵母、砂糖等材料克數。
+          </li>
+          <li>
+            <strong class="text-orange-600 dark:text-orange-400"
+              >廚藝計量單位轉換（右側）：</strong
+            >輸入數值並選擇常見廚房跨國烘焙單位（如：量杯 Cup、大匙 tbsp、小匙
+            tsp），系統會秒速換算為精確的公制克數（g）或毫升（ml）。
+          </li>
+        </ul>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div
+          class="lg:col-span-2 bg-white border border-slate-200 p-6 rounded-3xl shadow-xl flex flex-col justify-between"
+        >
+          <div>
+            <h2
+              class="text-xl font-bold mb-4 flex items-center gap-2 text-slate-900"
+            >
+              🍞 智能烘焙百分比智慧縮放核心
+            </h2>
+            <p class="text-xs text-slate-400 mb-6 font-mono">
+              Baking Percentage Scaler (Base on Flour 100%)
+            </p>
+
+            <div class="space-y-4">
+              <div
+                class="bg-orange-50/40 dark:bg-slate-900/40 p-4 rounded-2xl border border-orange-100/60"
+              >
+                <div class="flex justify-between text-sm font-bold mb-2">
+                  <span class="text-orange-600"
+                    >🎯 目標麵粉總量 (Flour Weight)</span
+                  >
+                  <span id="flourWeightText" class="text-slate-700 font-mono"
+                    >500 g</span
+                  >
+                </div>
+                <input
+                  type="range"
+                  id="flourSlider"
+                  min="100"
+                  max="2000"
+                  value="500"
+                  step="50"
+                  class="w-full accent-orange-500 cursor-pointer"
+                />
+                <span class="text-[10px] text-slate-400 block mt-1"
+                  >拖動滑桿即時等比例放大/縮小整份麵包配方原物料</span
+                >
+              </div>
+
+              <div class="space-y-3 pt-2">
+                <h3
+                  class="text-xs font-bold text-slate-400 uppercase tracking-wider"
+                >
+                  配方百分比設定 / RECIPE PERCENTAGE
+                </h3>
+
+                <div
+                  class="grid grid-cols-3 gap-4 items-center bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-100 dark:border-slate-900"
+                >
+                  <span
+                    class="text-xs font-bold text-slate-600 dark:text-slate-300"
+                    >💧 水水分 (Water)</span
+                  >
+                  <div class="flex items-center gap-1">
+                    <input
+                      type="number"
+                      id="pctWater"
+                      value="65"
+                      min="0"
+                      max="100"
+                      class="w-16 bg-white border border-slate-200 text-center rounded-lg text-xs py-1"
+                    />
+                    <span class="text-xs text-slate-400">%</span>
+                  </div>
+                  <span
+                    id="resWater"
+                    class="font-mono text-sm font-bold text-right text-orange-600"
+                    >325 g</span
+                  >
+                </div>
+
+                <div
+                  class="grid grid-cols-3 gap-4 items-center bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-100 dark:border-slate-900"
+                >
+                  <span
+                    class="text-xs font-bold text-slate-600 dark:text-slate-300"
+                    >🥛 鮮奶 (Milk)</span
+                  >
+                  <div class="flex items-center gap-1">
+                    <input
+                      type="number"
+                      id="pctMilk"
+                      value="10"
+                      min="0"
+                      max="100"
+                      class="w-16 bg-white border border-slate-200 text-center rounded-lg text-xs py-1"
+                    />
+                    <span class="text-xs text-slate-400">%</span>
+                  </div>
+                  <span
+                    id="resMilk"
+                    class="font-mono text-sm font-bold text-right text-orange-600"
+                    >50 g</span
+                  >
+                </div>
+
+                <div
+                  class="grid grid-cols-3 gap-4 items-center bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-100 dark:border-slate-900"
+                >
+                  <span
+                    class="text-xs font-bold text-slate-600 dark:text-slate-300"
+                    >🧫 酵母 (Yeast)</span
+                  >
+                  <div class="flex items-center gap-1">
+                    <input
+                      type="number"
+                      id="pctYeast"
+                      value="1.5"
+                      min="0"
+                      max="10"
+                      step="0.1"
+                      class="w-16 bg-white border border-slate-200 text-center rounded-lg text-xs py-1"
+                    />
+                    <span class="text-xs text-slate-400">%</span>
+                  </div>
+                  <span
+                    id="resYeast"
+                    class="font-mono text-sm font-bold text-right text-orange-600"
+                    >7.5 g</span
+                  >
+                </div>
+
+                <div
+                  class="grid grid-cols-3 gap-4 items-center bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-100 dark:border-slate-900"
+                >
+                  <span
+                    class="text-xs font-bold text-slate-600 dark:text-slate-300"
+                    >🍬 砂糖 (Sugar)</span
+                  >
+                  <div class="flex items-center gap-1">
+                    <input
+                      type="number"
+                      id="pctSugar"
+                      value="8"
+                      min="0"
+                      max="50"
+                      class="w-16 bg-white border border-slate-200 text-center rounded-lg text-xs py-1"
+                    />
+                    <span class="text-xs text-slate-400">%</span>
+                  </div>
+                  <span
+                    id="resSugar"
+                    class="font-mono text-sm font-bold text-right text-orange-600"
+                    >40 g</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-[10px] text-slate-400 font-mono mt-6 text-center">
+            Total Dough Weight:
+            <span id="totalDough" class="font-bold text-slate-600">922.5</span>
+            g
+          </div>
+        </div>
+
+        <div
+          class="bg-white border border-slate-200 p-6 rounded-3xl shadow-xl flex flex-col justify-between"
+        >
+          <div>
+            <h2
+              class="text-xl font-bold mb-6 flex items-center gap-2 text-slate-900"
+            >
+              ⚖️ 跨國廚藝計量轉換陣
+            </h2>
+
+            <div class="space-y-4">
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-400 uppercase mb-1 tracking-wider"
+                  >選擇食材種類 / INGREDIENT</label
+                >
+                <select
+                  id="foodType"
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                >
+                  <option value="water">純水 / 牛奶 (Water / Milk)</option>
+                  <option value="flour">低/高筋麵粉 (Flour)</option>
+                  <option value="sugar">精製砂糖 (Sugar)</option>
+                </select>
+              </div>
+
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-400 uppercase mb-1 tracking-wider"
+                  >選擇原始單位 / FROM UNIT</label
+                >
+                <select
+                  id="fromUnit"
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                >
+                  <option value="cup">美制量杯 (Cup)</option>
+                  <option value="tbsp">美制大匙 (Tablespoon / tbsp)</option>
+                  <option value="tsp">美制小匙 (Teaspoon / tsp)</option>
+                </select>
+              </div>
+
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-400 uppercase mb-1 tracking-wider"
+                  >輸入計量數值 / AMOUNT</label
+                >
+                <input
+                  type="number"
+                  id="unitAmount"
+                  value="1"
+                  min="0"
+                  step="0.5"
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                />
+              </div>
+
+              <hr class="border-slate-100 dark:border-slate-800 my-4" />
+
+              <h3
+                class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2"
+              >
+                標準公制換算結果 / CONVERTED TO METRIC
+              </h3>
+
+              <div class="space-y-3">
+                <div
+                  class="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-100 dark:border-slate-900 text-center"
+                >
+                  <span class="text-[10px] font-bold text-orange-500 block mb-1"
+                    >估算重量 / WEIGHT</span
+                  >
+                  <span
+                    id="convertWeight"
+                    class="font-mono text-xl font-black text-slate-800"
+                    >250 g</span
+                  >
+                </div>
+                <div
+                  class="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-100 dark:border-slate-900 text-center"
+                >
+                  <span class="text-[10px] font-bold text-amber-500 block mb-1"
+                    >對應容量 / VOLUME</span
+                  >
+                  <span
+                    id="convertVolume"
+                    class="font-mono text-xl font-black text-slate-800"
+                    >236.6 ml</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-[10px] text-slate-400 font-mono mt-4 text-center">
+            Culinary Logic Engine v1.0
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        // === BIẾN PHẦN 1: BẢNG TỶ LỆ HỒNG BÀI BÁNH ===
+        const flourSlider = document.getElementById("flourSlider");
+        const flourWeightText = document.getElementById("flourWeightText");
+        const pctWater = document.getElementById("pctWater");
+        const pctMilk = document.getElementById("pctMilk");
+        const pctYeast = document.getElementById("pctYeast");
+        const pctSugar = document.getElementById("pctSugar");
+
+        const resWater = document.getElementById("resWater");
+        const resMilk = document.getElementById("resMilk");
+        const resYeast = document.getElementById("resYeast");
+        const resSugar = document.getElementById("resSugar");
+        const totalDough = document.getElementById("totalDough");
+
+        function calculateBaking() {
+          const flour = parseFloat(flourSlider.value);
+          flourWeightText.innerText = `${flour} g`;
+
+          // Lấy tỷ lệ % người dùng cấu hình
+          const pWater = parseFloat(pctWater.value) || 0;
+          const pMilk = parseFloat(pctMilk.value) || 0;
+          const pYeast = parseFloat(pctYeast.value) || 0;
+          const pSugar = parseFloat(pctSugar.value) || 0;
+
+          // Thuật toán tính trọng lượng nguyên liệu dựa trên bột mì làm mốc 100%
+          const wWater = (flour * pWater) / 100;
+          const wMilk = (flour * pMilk) / 100;
+          const wYeast = (flour * pYeast) / 100;
+          const wSugar = (flour * pSugar) / 100;
+
+          // Đẩy kết quả hiển thị ra giao diện
+          resWater.innerText = `${wWater.toFixed(1)} g`;
+          resMilk.innerText = `${wMilk.toFixed(1)} g`;
+          resYeast.innerText = `${wYeast.toFixed(1)} g`;
+          resSugar.innerText = `${wSugar.toFixed(1)} g`;
+
+          // Tính tổng trọng lượng khối bột nhào
+          const total = flour + wWater + wMilk + wYeast + wSugar;
+          totalDough.innerText = total.toFixed(1);
+        }
+
+        // Đính kèm trình lắng nghe sự kiện thay đổi giá trị nhập/kéo
+        flourSlider.addEventListener("input", calculateBaking);
+        [pctWater, pctMilk, pctYeast, pctSugar].forEach((el) =>
+          el.addEventListener("input", calculateBaking),
+        );
+        calculateBaking();
+
+        // === BIẾN PHẦN 2: CHUYỂN ĐỔI ĐƠN VỊ ĐẦU BẾP ===
+        const foodType = document.getElementById("foodType");
+        const fromUnit = document.getElementById("fromUnit");
+        const unitAmount = document.getElementById("unitAmount");
+        const convertWeight = document.getElementById("convertWeight");
+        const convertVolume = document.getElementById("convertVolume");
+
+        // Bảng quy đổi mật độ thể tích chuẩn sang ml cho 1 đơn vị (Cup, tbsp, tsp)
+        const unitToMl = {
+          cup: 236.59,
+          tbsp: 14.79,
+          tsp: 4.93,
+        };
+
+        // Bảng hệ số khối lượng riêng (Mật độ g/ml) của từng loại thực phẩm
+        const foodDensity = {
+          water: 1.0, // 1ml nước = 1g
+          flour: 0.53, // Bột mì xốp, nhẹ hơn nước (1ml bột mì ≈ 0.53g)
+          sugar: 0.85, // Đường hạt (1ml đường ≈ 0.85g)
+        };
+
+        function convertKitchenUnits() {
+          const food = foodType.value;
+          const unit = fromUnit.value;
+          const amount = parseFloat(unitAmount.value) || 0;
+
+          // 1. Tính dung tích ml
+          const totalMl = amount * unitToMl[unit];
+          // 2. Tính khối lượng gram dựa trên mật độ khối lượng riêng thực phẩm
+          const totalGram = totalMl * foodDensity[food];
+
+          // Hiển thị kết quả quy đổi
+          convertVolume.innerText = `${totalMl.toFixed(1)} ml`;
+          convertWeight.innerText = `${totalGram.toFixed(1)} g`;
+        }
+
+        [foodType, fromUnit, unitAmount].forEach((el) =>
+          el.addEventListener("change", convertKitchenUnits),
+        );
+        unitAmount.addEventListener("input", convertKitchenUnits);
+        convertKitchenUnits();
+      });
+    </script>
+  </body>
+</html>
