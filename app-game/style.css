@@ -1,3 +1,4 @@
+/* Thiết lập không gian 3D đổ bóng cho quân bài lật */
 .card {
   perspective: 1000px;
   height: 90px;
@@ -30,22 +31,33 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
+
+/* Mặt sau quân bài (Màu trắng ở Light mode, màu slate sẫm ở Dark mode) */
 .card-back {
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  border: 1px solid #cbd5e1;
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+  border: 1px solid #e2e8f0;
   color: #059669;
   font-size: 1.8rem;
 }
+.dark .card-back {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border: 1px solid #334155;
+  color: #34d399;
+}
+
+/* Mặt trước hiển thị hình Emoji sau khi lật bài */
 .card-front {
   background: linear-gradient(135deg, #34d399 0%, #059669 100%);
   color: white;
   transform: rotateY(180deg);
   font-size: 2.2rem;
 }
+
+/* Làm mờ các cặp quân bài đã được tìm thấy trùng khớp thành công */
 .card.matched {
-  opacity: 0.4;
+  opacity: 0.3;
   pointer-events: none;
 }

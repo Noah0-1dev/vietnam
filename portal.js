@@ -1,102 +1,83 @@
 window.addEventListener("DOMContentLoaded", () => {
-  const codeSnippet = `const array = [1, 2, 3, 4, 5];
-const mapped = array.map(el => el * 2);
-console.log(mapped);`;
-
-  const textExample = document.getElementById("textExample");
-  const textInput = document.getElementById("textInput");
-  const timeLeftDisplay = document.getElementById("timeLeft");
-  const wpmDisplay = document.getElementById("wpm");
-  const accuracyDisplay = document.getElementById("accuracy");
-  const startTestBtn = document.getElementById("startTestBtn");
-
-  let maxTime = 30;
-  let timeLeft = maxTime;
-  let timerInterval = null;
-  let isPlaying = false;
-  let mistakes = 0;
-
-  function loadText() {
-    textExample.innerHTML = "";
-    codeSnippet.split("").forEach((char) => {
-      const span = document.createElement("span");
-      span.textContent = char;
-      textExample.appendChild(span);
-    });
-    if (textExample.children.length > 0)
-      textExample.children[0].classList.add("char-current");
+  // [Giữ nguyên đoạn code Canvas cũ của bạn ở đây...]
+  const canvas = document.getElementById("paintCanvas");
+  const ctx = canvas.getContext("2d");
+  const colorPicker = document.getElementById("colorPicker");
+  const lineWidthRange = document.getElementById("lineWidth");
+  const clearBtn = document.getElementById("clearBtn");
+  const downloadBtn = document.getElementById("downloadBtn");
+  let painting = false;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  function startPosition(e) {
+    painting = true;
+    draw(e);
   }
-
-  function startTest() {
-    isPlaying = true;
-    timeLeft = maxTime;
-    mistakes = 0;
-    textInput.disabled = false;
-    textInput.value = "";
-    wpmDisplay.textContent = "0";
-    accuracyDisplay.textContent = "100";
-    timeLeftDisplay.textContent = timeLeft;
-
-    loadText();
-    textInput.focus();
-
-    clearInterval(timerInterval);
-    timerInterval = setInterval(updateTimer, 1000);
+  function finishedPosition() {
+    painting = false;
+    ctx.beginPath();
   }
-
-  function updateTimer() {
-    if (timeLeft > 0) {
-      timeLeft--;
-      timeLeftDisplay.textContent = timeLeft;
-
-      let charactersTyped = textInput.value.length - mistakes;
-      if (charactersTyped < 0) charactersTyped = 0;
-      let timeElapsed = (maxTime - timeLeft) / 60;
-      let wpm = Math.round(charactersTyped / 5 / timeElapsed);
-      wpmDisplay.textContent = isFinite(wpm) && wpm > 0 ? wpm : 0;
-    } else {
-      endTest();
-    }
+  function draw(e) {
+    if (!painting) return;
+    ctx.strokeStyle = colorPicker.value;
+    ctx.lineWidth = lineWidthRange.value;
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x, y);
   }
-
-  textInput.addEventListener("input", () => {
-    const spans = textExample.querySelectorAll("span");
-    const inputChars = textInput.value.split("");
-    mistakes = 0;
-
-    spans.forEach((span, index) => {
-      const inputChar = inputChars[index];
-      span.classList.remove("char-correct", "char-incorrect", "char-current");
-
-      if (inputChar == null) {
-        if (index === inputChars.length) span.classList.add("char-current");
-      } else if (inputChar === span.textContent) {
-        span.classList.add("char-correct");
-      } else {
-        span.classList.add("char-incorrect");
-        mistakes++;
-      }
-    });
-
-    let totalTyped = inputChars.length;
-    let accuracy =
-      totalTyped > 0
-        ? Math.round(((totalTyped - mistakes) / totalTyped) * 100)
-        : 100;
-    accuracyDisplay.textContent = accuracy;
-
-    if (totalTyped >= spans.length) endTest();
+  canvas.addEventListener("mousedown", startPosition);
+  canvas.addEventListener("mouseup", finishedPosition);
+  canvas.addEventListener("mousemove", draw);
+  canvas.addEventListener("touchstart", startPosition);
+  canvas.addEventListener("touchend", finishedPosition);
+  canvas.addEventListener("touchmove", draw);
+  clearBtn.addEventListener("click", () =>
+    ctx.clearRect(0, 0, canvas.width, canvas.height),
+  );
+  downloadBtn.addEventListener("click", () => {
+    const link = document.createElement("a");
+    link.download = "sketch.png";
+    link.href = canvas.toDataURL();
+    link.click();
   });
 
-  function endTest() {
-    clearInterval(timerInterval);
-    textInput.disabled = true;
-    isPlaying = false;
-    alert(
-      `測驗結束！您的速度為: ${wpmDisplay.textContent} WPM，精確度為: ${accuracyDisplay.textContent}%`,
-    );
-  }
+  // 🚀 ENGINE XỬ LÝ QR CODE CÓ TẢI ẢNH
+  const qrInput = document.getElementById("qrInput");
+  const genQrBtn = document.getElementById("genQrBtn");
+  const qrcodeContainer = document.getElementById("qrcode");
+  const qrPlaceholder = document.getElementById("qrPlaceholder");
+  const downloadQrBtn = document.getElementById("downloadQrBtn");
 
-  startTestBtn.addEventListener("click", startTest);
-  loadText();
+  const qrcode = new QRCode(qrcodeContainer, { width: 180, height: 180 });
+
+  genQrBtn.addEventListener("click", () => {
+    const text = qrInput.value.trim();
+    if (!text) return alert("請先輸入內容！");
+    qrcode.makeCode(text);
+    qrcodeContainer.classList.remove("hidden");
+    qrPlaceholder.classList.add("hidden");
+
+    // Chờ thư viện render xong ảnh img rồi hiển thị nút tải
+    setTimeout(() => {
+      downloadQrBtn.classList.remove("hidden");
+    }, 300);
+  });
+
+  downloadQrBtn.addEventListener("click", () => {
+    const imgElement = qrcodeContainer.querySelector("img");
+    if (imgElement) {
+      const link = document.createElement("a");
+      link.download = "my_qrcode.png";
+      link.href = imgElement.src;
+      link.click();
+    } else {
+      alert("圖檔生成中，請稍後再試！");
+    }
+  });
 });

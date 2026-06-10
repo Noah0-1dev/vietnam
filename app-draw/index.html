@@ -3,60 +3,59 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>智能畫布 & QR 生成器</title>
+    <title>智能畫布 & QR 核心系統</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+      if (localStorage.getItem("theme_level3") === "dark")
+        document.documentElement.classList.add("dark");
+    </script>
   </head>
-  <body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8">
+  <body
+    class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen p-4 md:p-8 transition-colors duration-300"
+  >
     <div class="max-w-6xl mx-auto">
       <a
         href="../index.html"
-        class="inline-flex items-center text-sm text-purple-600 hover:text-purple-700 font-medium transition-colors mb-6"
+        class="inline-flex items-center text-sm text-purple-600 dark:text-purple-400 font-bold mb-6 hover:underline"
         >← 返回主入口總覽</a
       >
 
       <div
-        class="bg-purple-50 border border-purple-200 rounded-2xl p-5 mb-8 text-sm text-slate-700 shadow-sm"
+        class="bg-purple-50/60 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-900 rounded-2xl p-5 mb-8 text-xs md:text-sm text-slate-600 dark:text-slate-300 shadow-xs"
       >
-        <h4 class="font-bold text-purple-700 text-base mb-2">
-          💡 新手操作指南 (Quick Start)
-        </h4>
-        <ul
-          class="list-disc pl-5 space-y-1.5 text-xs md:text-sm text-slate-600"
+        <span
+          class="font-extrabold text-purple-700 dark:text-purple-400 block text-base mb-1.5"
+          >💡 Level 3 繪圖與二維碼系統指南</span
         >
-          <li>
-            <strong class="text-slate-900">線上畫布：</strong>
-            在白色畫布區域按住滑鼠左鍵（或手機手指觸控）即可隨意塗鴉。下方工具列可以更換顏色與調整線條粗細，完成後點擊「導出畫作」即可儲存為
-            PNG 圖片。
-          </li>
-          <li>
-            <strong class="text-slate-900">快速 QR 碼：</strong>
-            在右側輸入框內輸入任何網址或文字，點擊按鈕即可一鍵生成二維碼。
-          </li>
-        </ul>
+        <li>
+          使用滑鼠或移動設備觸控可在畫布上任意作畫，下方工具列可自由切換飽和度色彩與調整筆跡線徑。
+        </li>
+        <li>
+          在右側文字槽輸入 URL 後，系統除了即時編碼生成 QR
+          Code，還為您解鎖了本地圖檔導出按鈕。
+        </li>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div
-          class="lg:col-span-2 bg-white border border-slate-200 p-6 rounded-3xl shadow-xl flex flex-col items-center"
+          class="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col items-center"
         >
-          <h3
-            class="text-xl font-bold mb-4 self-start text-slate-900 flex items-center gap-2"
-          >
-            <span>🎨</span> 線上數位繪圖板
+          <h3 class="text-lg font-bold mb-4 self-start flex items-center gap-2">
+            <span>🎨</span> 線上數位繪圖板 Base
           </h3>
           <canvas
             id="paintCanvas"
             width="650"
             height="400"
-            class="bg-white rounded-2xl w-full shadow-inner border border-slate-300 cursor-crosshair touch-none"
+            class="bg-white rounded-2xl w-full shadow-inner border border-slate-200 dark:border-slate-700 cursor-crosshair touch-none"
           ></canvas>
 
           <div
-            class="flex flex-wrap gap-4 mt-6 items-center justify-center w-full bg-slate-50 p-4 rounded-xl border border-slate-200"
+            class="flex flex-wrap gap-4 mt-6 items-center justify-center w-full bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-200 dark:border-slate-800"
           >
             <div class="flex items-center gap-2">
-              <span class="text-xs text-slate-500 font-mono">COLOR:</span>
+              <span class="text-xs font-mono text-slate-400">COLOR:</span>
               <input
                 type="color"
                 id="colorPicker"
@@ -65,7 +64,7 @@
               />
             </div>
             <div class="flex items-center gap-2">
-              <span class="text-xs text-slate-500 font-mono">SIZE:</span>
+              <span class="text-xs font-mono text-slate-400">THICKNESS:</span>
               <input
                 type="range"
                 id="lineWidth"
@@ -78,53 +77,57 @@
             <div class="flex gap-2 ml-auto">
               <button
                 id="clearBtn"
-                class="bg-slate-200 hover:bg-rose-100 text-rose-600 px-4 py-2 text-xs font-bold rounded-xl transition-all"
+                class="bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 px-4 py-2 text-xs font-bold rounded-xl hover:bg-rose-100 transition-all"
               >
-                清空重來
+                清空畫布
               </button>
               <button
                 id="downloadBtn"
                 class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 text-xs font-bold rounded-xl transition-all shadow-md"
               >
-                導出畫作
+                導出畫作 PNG
               </button>
             </div>
           </div>
         </div>
 
         <div
-          class="bg-white border border-slate-200 p-6 rounded-3xl shadow-xl flex flex-col justify-between"
+          class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col justify-between"
         >
           <div>
-            <h3
-              class="text-xl font-bold mb-4 text-slate-900 flex items-center gap-2"
-            >
-              <span>✨</span> 快速 QR 碼轉換
+            <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+              <span>✨</span> 智慧快碼轉換核心
             </h3>
             <input
               type="text"
               id="qrInput"
-              placeholder="請輸入網址 URL..."
-              class="w-full p-3.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-purple-600 transition-colors"
+              placeholder="請輸入網址或常規字串..."
+              class="w-full p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:border-purple-500 text-slate-900 dark:text-slate-100"
             />
             <button
               id="genQrBtn"
-              class="w-full mt-4 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl text-sm shadow-md transition-all"
+              class="w-full mt-4 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl text-sm shadow-md transition-all cursor-pointer"
             >
-              生成二維條碼
+              矩陣邊碼化
             </button>
           </div>
 
           <div
-            class="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-2xl p-4 my-6 min-h-52 bg-slate-50"
+            class="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-4 my-6 min-h-56 bg-slate-50 dark:bg-slate-950"
           >
             <div
               id="qrcode"
               class="p-3 bg-white rounded-xl shadow-md hidden"
             ></div>
             <p id="qrPlaceholder" class="text-slate-400 text-xs font-light">
-              等待輸入中...
+              Awaiting Data Input...
             </p>
+            <button
+              id="downloadQrBtn"
+              class="mt-4 bg-slate-800 dark:bg-slate-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all hidden cursor-pointer"
+            >
+              💾 下載二維碼圖片
+            </button>
           </div>
         </div>
       </div>

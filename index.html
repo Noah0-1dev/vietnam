@@ -3,120 +3,286 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>極速程式碼英打測試</title>
+    <title>[NOAH]-MYAPPS 應用總覽 - Ultimate Edition</title>
+
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
     <style>
-      .char-correct {
-        color: #10b981;
-        border-bottom: 2px solid #10b981;
-        font-weight: bold;
+      body {
+        transition:
+          background-color 0.4s ease,
+          color 0.3s ease;
       }
-      .char-incorrect {
-        color: #f43f5e;
-        background-color: rgba(244, 63, 94, 0.1);
-        border-radius: 4px;
+
+      /* ĐỒNG BỘ DARK MODE CHẠY 100% */
+      .dark-mode-active {
+        background-color: #020617 !important;
+        color: #f8fafc !important;
       }
-      .char-current {
-        border-bottom: 2px solid #06b6d4;
-        animation: blink 0.8s infinite;
+      .dark-mode-active .bg-white {
+        background-color: #0f172a !important;
+        border-color: #1e293b !important;
+        color: #f8fafc !important;
       }
-      @keyframes blink {
+      .dark-mode-active h1,
+      .dark-mode-active h3,
+      .dark-mode-active h4 {
+        color: #ffffff !important;
+      }
+      .dark-mode-active p {
+        color: #94a3b8 !important;
+      }
+      .dark-mode-active .text-slate-950 {
+        color: #f8fafc !important;
+      }
+
+      /* 💡 HIỆU ỨNG NỀN DI CHUYỂN CHẬM (ANIMATED GRADIENT MESH) */
+      @keyframes gradientBG {
+        0% {
+          background-position: 0% 50%;
+        }
         50% {
-          border-color: transparent;
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
         }
       }
+      .animated-bg {
+        background: linear-gradient(
+          -45deg,
+          rgba(199, 210, 254, 0.3),
+          rgba(233, 213, 255, 0.3),
+          rgba(165, 243, 252, 0.3)
+        );
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+      }
+      .dark-mode-active .animated-bg {
+        background: linear-gradient(
+          -45deg,
+          rgba(88, 28, 135, 0.15),
+          rgba(30, 27, 75, 0.2),
+          rgba(21, 94, 117, 0.15)
+        );
+        background-size: 400% 400%;
+      }
     </style>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        if (localStorage.getItem("theme_level3") === "dark") {
+          document.body.classList.add("dark-mode-active");
+          document.getElementById("icon-dark").classList.add("hidden");
+          document.getElementById("icon-light").classList.remove("hidden");
+        }
+      });
+    </script>
   </head>
-  <body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8">
-    <div class="max-w-4xl mx-auto">
-      <a
-        href="../index.html"
-        class="inline-flex items-center text-sm text-cyan-600 hover:text-cyan-700 font-medium transition-colors mb-6"
-        >← 返回主入口總覽</a
-      >
+  <body
+    class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between font-sans relative overflow-x-hidden antialiased"
+  >
+    <div
+      class="animated-bg absolute top-0 left-0 w-full h-[580px] -z-10 blur-2xl"
+    ></div>
 
+    <div
+      class="max-w-6xl mx-auto w-full px-6 pt-6 flex justify-between items-center relative z-20"
+    >
       <div
-        class="bg-cyan-50 border border-cyan-200 rounded-2xl p-5 mb-8 text-sm text-slate-700 shadow-sm"
+        class="flex items-center gap-2 font-mono text-xs font-bold tracking-wider text-slate-400"
       >
-        <h4 class="font-bold text-cyan-700 text-base mb-2">
-          💡 新手操作指南 (Quick Start)
-        </h4>
-        <ul
-          class="list-disc pl-5 space-y-1.5 text-xs md:text-sm text-slate-600"
-        >
-          <li>
-            <strong class="text-slate-900">如何開始：</strong>
-            點擊右下角的「開始測驗」按鈕，下方的文字輸入框即會解鎖，此時 30
-            秒倒數計時將同步啟動。
-          </li>
-          <li>
-            <strong class="text-slate-900">即時校對：</strong>
-            請對照上方灰色框內的程式碼進行輸入。打對的字會顯示為綠色，打錯則會呈現紅底。系統會即時動態精算您的
-            WPM 速率與正確率。
-          </li>
-        </ul>
-      </div>
-
-      <div class="grid grid-cols-3 gap-4 mb-6">
-        <div
-          class="bg-white border border-slate-200 p-4 rounded-2xl text-center shadow-md"
-        >
-          <span
-            class="block text-xs text-slate-400 font-mono uppercase tracking-wider"
-            >TIME LEFT</span
-          >
-          <span
-            id="timeLeft"
-            class="text-2xl font-black font-mono text-cyan-600"
-            >30</span
-          ><span class="text-xs text-slate-400 ml-1">s</span>
-        </div>
-        <div
-          class="bg-white border border-slate-200 p-4 rounded-2xl text-center shadow-md"
-        >
-          <span
-            class="block text-xs text-slate-400 font-mono uppercase tracking-wider"
-            >SPEED (WPM)</span
-          >
-          <span id="wpm" class="text-2xl font-black font-mono text-cyan-600"
-            >0</span
-          >
-        </div>
-        <div
-          class="bg-white border border-slate-200 p-4 rounded-2xl text-center shadow-md"
-        >
-          <span
-            class="block text-xs text-slate-400 font-mono uppercase tracking-wider"
-            >ACCURACY</span
-          >
-          <span
-            id="accuracy"
-            class="text-2xl font-black font-mono text-cyan-600"
-            >100</span
-          ><span class="text-xs text-slate-400 ml-1">%</span>
-        </div>
-      </div>
-
-      <div
-        id="textExample"
-        class="bg-slate-100 p-6 rounded-2xl border border-slate-200 font-mono text-base md:text-lg tracking-wide leading-relaxed select-none mb-6 whitespace-pre-wrap break-all text-slate-500 shadow-inner"
-      ></div>
-      <textarea
-        id="textInput"
-        placeholder="請點擊下方按鈕啟動測驗..."
-        class="w-full h-32 p-4 rounded-2xl bg-white border border-slate-300 text-slate-900 font-mono focus:outline-none focus:border-cyan-600 transition-all text-sm md:text-base resize-none shadow-md"
-        disabled
-      ></textarea>
-
-      <div class="mt-4 flex justify-end">
-        <button
-          id="startTestBtn"
-          class="bg-cyan-600 hover:bg-cyan-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition-all shadow-md"
-        >
-          開始測驗 / 重新整理
-        </button>
+        <span
+          class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"
+        ></span>
+        SYSTEM: ACTIVE
       </div>
     </div>
-    <script src="script.js"></script>
+
+    <header class="py-10 text-center relative z-10">
+      <div
+        class="inline-block px-4 py-1.5 mb-4 bg-white border border-slate-200 rounded-full text-xs text-indigo-600 font-mono tracking-widest uppercase shadow-xs"
+      >
+        ✨ WEB INTELLIGENCE PORTFOLIO
+      </div>
+      <h1
+        class="text-3xl md:text-5xl font-black tracking-tight text-slate-900 uppercase"
+      >
+        [NOAH]-MYAPPS 應用總覽
+      </h1>
+      <p class="text-slate-500 mt-3 text-sm md:text-base font-light">
+        網頁智慧化程式 - 期末專題全新改版成果展現
+      </p>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-2 flex-grow w-full relative z-10">
+      <div
+        class="bg-white/80 border border-slate-200 rounded-2xl p-5 mb-8 shadow-xs backdrop-blur-md"
+      >
+        <h4
+          class="font-bold text-slate-900 text-base mb-2 flex items-center gap-2"
+        >
+          <span>📖</span> 系統導覽與新手操作指南
+        </h4>
+        <p class="text-xs md:text-sm text-slate-600 leading-relaxed mb-2">
+          歡迎來到全新升級的雙模態智慧網頁系統！本入口整合了三個核心應用組件，可點擊右下角懸浮按鈕切換深色主題，請參閱下方的簡易說明進行操作：
+        </p>
+        <div
+          class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3 pt-3 border-t border-slate-100 text-xs text-slate-500"
+        >
+          <div>
+            <strong class="text-purple-600">🎨 畫布與 QR 碼：</strong>
+            支援滑鼠/觸控塗鴉，可一鍵導出畫作，並提供網址快速轉換為二維條碼。
+          </div>
+          <div>
+            <strong class="text-emerald-600">🃏 3D 翻牌遊戲：</strong>
+            經技術修復的穩定版本。支援多種難度切換，連續找出兩張相同圖案即可消除。
+          </div>
+          <div>
+            <strong class="text-cyan-600">⌨️ 英打盲測儀：</strong>
+            點擊開始後啟動 30 秒倒數，系統會精準計算您的 WPM 字數與輸入正確率。
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div
+          class="bg-white rounded-3xl border border-slate-200 p-8 shadow-xl hover:shadow-2xl hover:shadow-purple-500/10 hover:-translate-y-2 transition-all duration-300 group flex flex-col justify-between relative overflow-hidden"
+        >
+          <span
+            class="absolute top-4 right-4 bg-purple-50 text-purple-600 text-[10px] font-bold px-2 py-0.5 rounded-md border border-purple-200"
+            >Tools</span
+          >
+          <div>
+            <div
+              class="w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center text-3xl mb-6 border border-purple-100 shadow-xs"
+            >
+              🎨
+            </div>
+            <h3
+              class="text-xl font-bold tracking-tight text-slate-950 group-hover:text-purple-600 transition-colors"
+            >
+              智能畫布 & 雲端快碼
+            </h3>
+            <p class="text-slate-500 text-sm mt-3 leading-relaxed font-light">
+              整合 HTML5 Canvas 科技的互動式塗鴉畫板，與高容錯率 QR Code
+              生成引擎。
+            </p>
+          </div>
+          <div class="mt-8">
+            <a
+              href="./app-draw/index.html"
+              class="flex items-center justify-center w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 rounded-xl transition-all shadow-md shadow-purple-100"
+              >進入應用系統 →</a
+            >
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-3xl border border-slate-200 p-8 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/10 hover:-translate-y-2 transition-all duration-300 group flex flex-col justify-between relative overflow-hidden"
+        >
+          <span
+            class="absolute top-4 right-4 bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-md border border-emerald-200 animate-pulse"
+            >Multi-Level 🔥</span
+          >
+          <div>
+            <div
+              class="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center text-3xl mb-6 border border-emerald-100 shadow-xs"
+            >
+              🃏
+            </div>
+            <h3
+              class="text-xl font-bold tracking-tight text-slate-950 group-hover:text-emerald-600 transition-colors"
+            >
+              3D 翻牌對對碰
+            </h3>
+            <p class="text-slate-500 text-sm mt-3 leading-relaxed font-light">
+              【已修復】經典腦力記憶互動賽事，搭載高隨機性洗牌演算法、精準計時器与多難度配置。
+            </p>
+          </div>
+          <div class="mt-8">
+            <a
+              href="./app-game/index.html"
+              class="flex items-center justify-center w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3 rounded-xl transition-all shadow-md shadow-emerald-100"
+              >啟動記憶矩陣 →</a
+            >
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-3xl border border-slate-200 p-8 shadow-xl hover:shadow-2xl hover:shadow-cyan-500/10 hover:-translate-y-2 transition-all duration-300 group flex flex-col justify-between relative overflow-hidden"
+        >
+          <span
+            class="absolute top-4 right-4 bg-cyan-50 text-cyan-600 text-[10px] font-bold px-2 py-0.5 rounded-md border border-cyan-200"
+            >30s Speed</span
+          >
+          <div>
+            <div
+              class="w-14 h-14 bg-cyan-50 rounded-2xl flex items-center justify-center text-3xl mb-6 border border-cyan-100 shadow-xs"
+            >
+              ⌨️
+            </div>
+            <h3
+              class="text-xl font-bold tracking-tight text-slate-950 group-hover:text-cyan-600 transition-colors"
+            >
+              極速程式碼英打盲測
+            </h3>
+            <p class="text-slate-500 text-sm mt-3 leading-relaxed font-light">
+              專為工程師設計的即時語法英打檢測儀，能動態演算 WPM
+              速度與字符正確率。
+            </p>
+          </div>
+          <div class="mt-8">
+            <a
+              href="./app-typing/index.html"
+              class="flex items-center justify-center w-full bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-3 rounded-xl transition-all shadow-md shadow-cyan-100"
+              >開始極速挑戰 →</a
+            >
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer
+      class="py-6 text-center border-t border-slate-200 text-slate-400 text-xs mt-12 bg-white"
+    >
+      © 2026 MyApps Labs. Designed with Intelligent Dual Theme UI Mode.
+    </footer>
+
+    <button
+      id="themeToggle"
+      class="fixed bottom-6 right-6 z-50 bg-white border border-slate-200 text-slate-800 px-4 py-3 rounded-full shadow-xl hover:shadow-2xl cursor-pointer hover:scale-110 active:scale-95 transition-all text-sm font-semibold flex items-center gap-2 backdrop-blur-md"
+    >
+      <span id="icon-dark" class="flex items-center gap-1.5"
+        >🌙 <span>Go Dark</span></span
+      >
+      <span
+        id="icon-light"
+        class="hidden flex items-center gap-1.5 text-amber-400"
+        >☀️
+        <span class="text-slate-800 dark:text-slate-200">Go Light</span></span
+      >
+    </button>
+
+    <script>
+      const themeToggle = document.getElementById("themeToggle");
+      const iconDark = document.getElementById("icon-dark");
+      const iconLight = document.getElementById("icon-light");
+
+      function toggleTheme() {
+        if (document.body.classList.contains("dark-mode-active")) {
+          document.body.classList.remove("dark-mode-active");
+          iconDark.classList.remove("hidden");
+          iconLight.classList.add("hidden");
+          localStorage.setItem("theme_level3", "light");
+        } else {
+          document.body.classList.add("dark-mode-active");
+          iconDark.classList.add("hidden");
+          iconLight.classList.remove("hidden");
+          localStorage.setItem("theme_level3", "dark");
+        }
+      }
+      themeToggle.addEventListener("click", toggleTheme);
+    </script>
   </body>
 </html>

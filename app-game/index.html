@@ -3,67 +3,123 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3D 記憶翻牌對對碰</title>
+    <title>3D 記憶矩陣對對碰 - Ultimate</title>
+
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="style.css" />
+
+    <style>
+      /* Hiệu ứng chuyển màu nền mượt mà */
+      body {
+        transition:
+          background-color 0.4s ease,
+          color 0.3s ease;
+      }
+
+      /* ĐẢM BẢO DARK MODE CHẠY 100%: Tự ép cấu hình màu tối đồng bộ với trang chủ */
+      .dark-mode-active {
+        background-color: #020617 !important; /* Slate 950 */
+        color: #f8fafc !important; /* Slate 50 */
+      }
+      .dark-mode-active .bg-white {
+        background-color: #0f172a !important; /* Slate 900 */
+        border-color: #1e293b !important; /* Slate 800 */
+      }
+      .dark-mode-active select {
+        background-color: #0f172a !important;
+        border-color: #334155 !important;
+        color: #f1f5f9 !important;
+      }
+      .dark-mode-active #gameBoard {
+        background-color: rgba(15, 23, 42, 0.4) !important;
+        border-color: #1e293b !important;
+      }
+    </style>
+
+    <script>
+      /* Kiểm tra bộ nhớ LocalStorage để kích hoạt giao diện tối ngay lập tức */
+      window.addEventListener("DOMContentLoaded", () => {
+        if (localStorage.getItem("theme_level3") === "dark") {
+          document.body.classList.add("dark-mode-active");
+        }
+      });
+    </script>
   </head>
-  <body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8">
+  <body
+    class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8 overflow-x-hidden antialiased"
+  >
     <div class="max-w-4xl mx-auto">
       <a
         href="../index.html"
-        class="inline-flex items-center text-sm text-emerald-600 hover:text-emerald-700 font-medium transition-colors mb-6"
+        class="inline-flex items-center text-sm text-emerald-600 dark:text-emerald-400 font-bold mb-6 hover:underline"
         >← 返回主入口總覽</a
       >
 
       <div
-        class="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 mb-8 text-sm text-slate-700 shadow-sm"
+        class="bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900 rounded-2xl p-5 mb-8 text-xs md:text-sm text-slate-600 dark:text-slate-300 shadow-xs"
       >
-        <h4 class="font-bold text-emerald-700 text-base mb-2">
-          💡 新手操作指南 (Quick Start)
-        </h4>
-        <ul
-          class="list-disc pl-5 space-y-1.5 text-xs md:text-sm text-slate-600"
+        <span
+          class="font-extrabold text-emerald-700 dark:text-emerald-400 block text-base mb-1.5"
+          >💡矩陣遊戲操作規則</span
         >
+        <ul class="list-disc pl-4 space-y-1">
           <li>
-            <strong class="text-slate-900">如何遊玩：</strong> 畫面上共有 16
-            張隱藏圖案的卡牌。隨機點擊任意一張即可使其翻開。
+            點擊任何隱藏卡片，系統會透過虛擬聲卡即時渲染發出 300Hz
+            的物理模擬翻轉聲響。
           </li>
           <li>
-            <strong class="text-slate-900">配對消除：</strong>
-            連續翻開兩張卡牌，如果兩者的動物圖案相同，則配對成功並鎖定（變為半透明）；如果不同，卡牌會在
-            1 秒後自動翻回背面。翻開所有配對即可過關！
+            若兩張卡片圖形完全吻合，則會成功鎖定。您可以自由切換下方難度，挑戰您的記憶極限！
           </li>
         </ul>
       </div>
 
       <div
-        class="flex justify-between items-center bg-white border border-slate-200 p-5 rounded-2xl mb-8 shadow-md"
+        class="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white border border-slate-200 p-5 rounded-2xl mb-8 shadow-md"
       >
-        <div class="font-mono text-sm text-slate-600">
+        <div class="font-mono text-xs md:text-sm flex items-center">
           ⏱️ RUNTIME:
-          <span id="timer" class="font-bold text-emerald-600 text-lg ml-1"
+          <span
+            id="timer"
+            class="font-bold text-emerald-600 dark:text-emerald-400 text-base ml-1"
             >00:00</span
           >
         </div>
-        <div class="font-mono text-sm text-slate-600">
-          🔄 CLICKS:
-          <span id="clicks" class="font-bold text-emerald-600 text-lg ml-1"
+
+        <div class="flex items-center gap-2 text-xs md:text-sm font-mono">
+          <span>🎯 DIFFICULTY:</span>
+          <select
+            id="difficultySelect"
+            class="bg-slate-50 border border-slate-300 text-slate-900 rounded-xl px-2.5 py-1.5 font-sans font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 text-xs md:text-sm cursor-pointer"
+          >
+            <option value="easy">簡單模式 (4x2 矩陣)</option>
+            <option value="normal" selected>一般模式 (4x4 矩陣)</option>
+            <option value="hard">困難模式 (6x4 矩陣)</option>
+          </select>
+        </div>
+
+        <div class="font-mono text-xs md:text-sm flex items-center">
+          🔄 TOTAL CLICKS:
+          <span
+            id="clicks"
+            class="font-bold text-emerald-600 dark:text-emerald-400 text-base ml-1"
             >0</span
           >
         </div>
+
         <button
           id="restartBtn"
-          class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow-md transition-all"
+          class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs shadow-sm transition-all cursor-pointer hover:scale-105 active:scale-95"
         >
-          重啟對局
+          重啟矩陣
         </button>
       </div>
 
       <div
         id="gameBoard"
-        class="grid grid-cols-4 gap-3 md:gap-4 max-w-md mx-auto min-h-[400px] bg-slate-200/40 p-4 rounded-3xl border border-slate-200 shadow-inner"
+        class="grid gap-3 md:gap-4 mx-auto p-4 rounded-3xl border border-slate-200 shadow-inner"
       ></div>
     </div>
+
     <script src="script.js"></script>
   </body>
 </html>
