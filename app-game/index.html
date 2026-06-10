@@ -1,32 +1,69 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>3D 記憶翻牌對對碰</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8">
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8">
     <div class="max-w-4xl mx-auto">
-        <a href="../index.html" class="inline-flex items-center text-sm text-emerald-600 hover:text-emerald-700 transition-colors mb-6 font-medium">← 返回主入口總覽</a>
-        
-        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 mb-8 text-sm text-slate-700 shadow-sm">
-            <h4 class="font-bold text-emerald-700 text-base mb-2">💡 新手操作指南 (Quick Start)</h4>
-            <ul class="list-disc pl-5 space-y-1.5 text-xs md:text-sm text-slate-600">
-                <li><strong class="text-slate-900">核心玩法：</strong> 點擊下方任意方塊卡牌，卡牌會旋轉翻開並露出內部的動物表情符號。</li>
-                <li><strong class="text-slate-900">配對規則：</strong> 請連續翻開兩張卡牌。如果圖案相同，卡牌成功鎖定並變淡；如果不同，兩張牌會在 1 秒後自動翻回背面。請用最少的時間找出所有配對！</li>
-            </ul>
-        </div>
+      <a
+        href="../index.html"
+        class="inline-flex items-center text-sm text-emerald-600 hover:text-emerald-700 font-medium transition-colors mb-6"
+        >← 返回主入口總覽</a
+      >
 
-        <div class="flex justify-between items-center bg-white border border-slate-200 p-5 rounded-2xl mb-8 shadow-md">
-            <div class="font-mono text-sm text-slate-700">⏱️ RUNTIME: <span id="timer" class="font-bold text-emerald-600 text-lg ml-1">00:00</span></div>
-            <div class="font-mono text-sm text-slate-700">🔄 CLICKS: <span id="clicks" class="font-bold text-emerald-600 text-lg ml-1">0</span></div>
-            <button id="restartBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow-md transition-all">重啟對局</button>
-        </div>
+      <div
+        class="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 mb-8 text-sm text-slate-700 shadow-sm"
+      >
+        <h4 class="font-bold text-emerald-700 text-base mb-2">
+          💡 新手操作指南 (Quick Start)
+        </h4>
+        <ul
+          class="list-disc pl-5 space-y-1.5 text-xs md:text-sm text-slate-600"
+        >
+          <li>
+            <strong class="text-slate-900">如何遊玩：</strong> 畫面上共有 16
+            張隱藏圖案的卡牌。隨機點擊任意一張即可使其翻開。
+          </li>
+          <li>
+            <strong class="text-slate-900">配對消除：</strong>
+            連續翻開兩張卡牌，如果兩者的動物圖案相同，則配對成功並鎖定（變為半透明）；如果不同，卡牌會在
+            1 秒後自動翻回背面。翻開所有配對即可過關！
+          </li>
+        </ul>
+      </div>
 
-        <div id="gameBoard" class="grid grid-cols-4 gap-3 md:gap-4 max-w-md mx-auto min-h-[400px] bg-slate-200/50 p-4 rounded-3xl border border-slate-200 shadow-inner"></div>
+      <div
+        class="flex justify-between items-center bg-white border border-slate-200 p-5 rounded-2xl mb-8 shadow-md"
+      >
+        <div class="font-mono text-sm text-slate-600">
+          ⏱️ RUNTIME:
+          <span id="timer" class="font-bold text-emerald-600 text-lg ml-1"
+            >00:00</span
+          >
+        </div>
+        <div class="font-mono text-sm text-slate-600">
+          🔄 CLICKS:
+          <span id="clicks" class="font-bold text-emerald-600 text-lg ml-1"
+            >0</span
+          >
+        </div>
+        <button
+          id="restartBtn"
+          class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs md:text-sm shadow-md transition-all"
+        >
+          重啟對局
+        </button>
+      </div>
+
+      <div
+        id="gameBoard"
+        class="grid grid-cols-4 gap-3 md:gap-4 max-w-md mx-auto min-h-[400px] bg-slate-200/40 p-4 rounded-3xl border border-slate-200 shadow-inner"
+      ></div>
     </div>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
