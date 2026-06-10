@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智慧體態與熱量管理核心 - Fitness Intelligence</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+      body {
+        transition:
+          background-color 0.4s ease,
+          color 0.3s ease;
+      }
+      /* ĐẢM BẢO DARK MODE ĐỒNG BỘ 100% VỚI HỆ THỐNG PORTFOLIO CỦA BẠN */
+      .dark-mode-active {
+        background-color: #020617 !important;
+        color: #f8fafc !important;
+      }
+      .dark-mode-active .bg-white {
+        background-color: #0f172a !important;
+        border-color: #1e293b !important;
+      }
+      .dark-mode-active h2,
+      .dark-mode-active h3,
+      .dark-mode-active h4 {
+        color: #ffffff !important;
+      }
+      .dark-mode-active input,
+      .dark-mode-active select {
+        background-color: #020617 !important;
+        border-color: #334155 !important;
+        color: #f1f5f9 !important;
+      }
+      .dark-mode-active #instructions {
+        background-color: rgba(30, 27, 75, 0.2) !important;
+        border-color: #312e81 !important;
+      }
+    </style>
+
+    <script>
+      // Kiểm tra và đồng bộ trạng thái Dark Mode từ LocalStorage hệ thống của bạn
+      window.addEventListener("DOMContentLoaded", () => {
+        if (localStorage.getItem("theme_level3") === "dark") {
+          document.body.classList.add("dark-mode-active");
+        }
+      });
+    </script>
+  </head>
+  <body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8 antialiased">
+    <div class="max-w-6xl mx-auto">
+      <a
+        href="../index.html"
+        class="inline-flex items-center text-sm text-indigo-600 dark:text-indigo-400 font-bold mb-6 hover:underline"
+      >
+        ← 返回主入口總覽
+      </a>
+
+      <div
+        id="instructions"
+        class="bg-indigo-50/60 border border-indigo-200 rounded-2xl p-5 mb-8 text-xs md:text-sm text-slate-600 dark:text-slate-300 shadow-xs"
+      >
+        <h4
+          class="font-extrabold text-indigo-700 dark:text-indigo-400 block text-base mb-2 flex items-center gap-2"
+        >
+          <span>💪</span> 智慧健身科學化體態管理板 - 操作指南
+        </h4>
+        <ul class="list-decimal pl-4 space-y-1.5 leading-relaxed">
+          <li>
+            <strong class="text-indigo-600 dark:text-indigo-400"
+              >輸入個人基礎數據：</strong
+            >請在左側控制台輸入您的性別、年齡、身高與體重，並根據實際生活作息選擇您的每日運動頻率。
+          </li>
+          <li>
+            <strong class="text-indigo-600 dark:text-indigo-400"
+              >動態目標切換：</strong
+            >點擊選擇您的健身目標（維持體重、增肌、減脂），系統將會啟動地端智能算法。
+          </li>
+          <li>
+            <strong class="text-emerald-600 dark:text-emerald-400 font-bold"
+              >即時科學化分析：</strong
+            >右側區塊會 100% 瞬間免聯網計算出您的 BMI 體態落點、每日總熱量消耗
+            (TDEE)，並精準拆解出您每日必需要攝取的蛋白質、碳水化合物及脂肪克數分配！
+          </li>
+        </ul>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div
+          class="lg:col-span-1 bg-white border border-slate-200 p-6 rounded-3xl shadow-xl flex flex-col justify-between"
+        >
+          <div>
+            <h2
+              class="text-xl font-bold mb-6 flex items-center gap-2 text-slate-900"
+            >
+              🏋️ 體態數據採集核心
+            </h2>
+
+            <div class="space-y-4">
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-400 uppercase mb-1 tracking-wider"
+                  >性別 / GENDER</label
+                >
+                <select
+                  id="gender"
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                >
+                  <option value="male">男性 / MALE</option>
+                  <option value="female">女性 / FEMALE</option>
+                </select>
+              </div>
+
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-400 uppercase mb-1 tracking-wider"
+                  >年齡 / AGE (歲)</label
+                >
+                <input
+                  type="number"
+                  id="age"
+                  value="22"
+                  min="1"
+                  max="100"
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                />
+              </div>
+
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-400 uppercase mb-1 tracking-wider"
+                  >身高 / HEIGHT (CM)</label
+                >
+                <input
+                  type="number"
+                  id="height"
+                  value="175"
+                  min="100"
+                  max="250"
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                />
+              </div>
+
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-400 uppercase mb-1 tracking-wider"
+                  >體重 / WEIGHT (KG)</label
+                >
+                <input
+                  type="number"
+                  id="weight"
+                  value="68"
+                  min="30"
+                  max="200"
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                />
+              </div>
+
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-400 uppercase mb-1 tracking-wider"
+                  >活動量量度 / ACTIVITY LEVEL</label
+                >
+                <select
+                  id="activity"
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                >
+                  <option value="1.2">久坐缺乏運動 (辦公、工程師)</option>
+                  <option value="1.375">輕度活動 (每週輕鬆運動 1-3 天)</option>
+                  <option value="1.55">中度活動 (每週規律健身 3-5 天)</option>
+                  <option value="1.725">
+                    高度活動 (每週高強度訓練 6-7 天)
+                  </option>
+                  <option value="1.9">極高強度活動 (運動員、重體力勞動)</option>
+                </select>
+              </div>
+
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-400 uppercase mb-1 tracking-wider"
+                  >健身戰略目標 / TARGET</label
+                >
+                <select
+                  id="goal"
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                >
+                  <option value="maintain">維持體態 (Maintain)</option>
+                  <option value="lose">健康減脂 (Fat Loss)</option>
+                  <option value="gain">高效增肌 (Muscle Gain)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <button
+            id="calculateBtn"
+            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl text-sm transition-all shadow-md mt-6 cursor-pointer"
+          >
+            啟動智能運算分析
+          </button>
+        </div>
+
+        <div
+          class="lg:col-span-2 bg-white border border-slate-200 p-6 rounded-3xl shadow-xl flex flex-col justify-between"
+        >
+          <div>
+            <h2
+              class="text-xl font-bold mb-6 flex items-center gap-2 text-slate-900"
+            >
+              ✨ 科學化宏量營養素分析核心
+            </h2>
+
+            <div
+              id="resultPlaceholder"
+              class="py-20 text-center text-slate-400 text-sm font-light"
+            >
+              ⚡ Awaiting Fitness Data Input... 請點擊左側按鈕開始計算
+            </div>
+
+            <div id="resultContent" class="hidden space-y-6">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div
+                  class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center"
+                >
+                  <p class="text-xs font-bold text-slate-400 mb-1">
+                    BMI 身體質量指數
+                  </p>
+                  <p id="bmiValue" class="text-2xl font-black text-indigo-600">
+                    22.2
+                  </p>
+                  <span
+                    id="bmiStatus"
+                    class="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 bg-emerald-100 text-emerald-800"
+                    >正常體態</span
+                  >
+                </div>
+                <div
+                  class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center"
+                >
+                  <p class="text-xs font-bold text-slate-400 mb-1">
+                    BMR 基礎代謝率
+                  </p>
+                  <p id="bmrValue" class="text-2xl font-black text-slate-800">
+                    1650
+                  </p>
+                  <span class="text-[10px] font-mono text-slate-400"
+                    >kcal / 每日維持生命所需</span
+                  >
+                </div>
+                <div
+                  class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-center"
+                >
+                  <p class="text-xs font-bold text-slate-400 mb-1">
+                    TDEE 每日總消耗熱量
+                  </p>
+                  <p id="tdeeValue" class="text-2xl font-black text-amber-500">
+                    2350
+                  </p>
+                  <span
+                    id="targetCalorieLabel"
+                    class="text-[10px] font-bold text-indigo-500 block mt-1"
+                    >目標建議攝取: 2350 kcal</span
+                  >
+                </div>
+              </div>
+
+              <hr class="border-slate-100 dark:border-slate-800 my-2" />
+
+              <div>
+                <h3
+                  class="text-sm font-bold mb-4 text-slate-700 flex items-center gap-1"
+                >
+                  📊 每日三大宏量營養素目標配比 (Macros)
+                </h3>
+
+                <div class="space-y-4">
+                  <div>
+                    <div class="flex justify-between text-xs font-bold mb-1">
+                      <span class="text-rose-500">🥩 蛋白質 PROTEIN</span>
+                      <span id="proteinText" class="text-slate-500"
+                        >136g (544 kcal)</span
+                      >
+                    </div>
+                    <div
+                      class="w-full bg-slate-100 rounded-full h-3 overflow-hidden"
+                    >
+                      <div
+                        id="proteinBar"
+                        class="bg-rose-500 h-3 rounded-full transition-all duration-500"
+                        style="width: 30%"
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="flex justify-between text-xs font-bold mb-1">
+                      <span class="text-amber-500">🍚 碳水化合物 CARBS</span>
+                      <span id="carbsText" class="text-slate-500"
+                        >264g (1056 kcal)</span
+                      >
+                    </div>
+                    <div
+                      class="w-full bg-slate-100 rounded-full h-3 overflow-hidden"
+                    >
+                      <div
+                        id="carbsBar"
+                        class="bg-amber-500 h-3 rounded-full transition-all duration-500"
+                        style="width: 50%"
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="flex justify-between text-xs font-bold mb-1">
+                      <span class="text-emerald-500">🥑 脂肪 FATS</span>
+                      <span id="fatsText" class="text-slate-500"
+                        >59g (531 kcal)</span
+                      >
+                    </div>
+                    <div
+                      class="w-full bg-slate-100 rounded-full h-3 overflow-hidden"
+                    >
+                      <div
+                        id="fatsBar"
+                        class="bg-emerald-500 h-3 rounded-full transition-all duration-500"
+                        style="width: 20%"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            id="resultFooter"
+            class="hidden mt-6 p-4 bg-indigo-50/40 dark:bg-slate-900/40 border border-indigo-100/60 dark:border-slate-800 rounded-2xl text-xs text-slate-500 leading-relaxed"
+          >
+            💡
+            <strong class="text-indigo-600 dark:text-indigo-400"
+              >地端智能健康建議：</strong
+            >
+            <span id="adviceText"
+              >根據您的體態落點與增肌目標，建議每日維持熱量盈餘 300
+              大卡。蛋白質攝取比例已為您拉高至總熱量的 25%
+              以利肌肉合成，請搭配規律的抗阻力重量訓練取得最佳成效。</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        const calculateBtn = document.getElementById("calculateBtn");
+        const resultPlaceholder = document.getElementById("resultPlaceholder");
+        const resultContent = document.getElementById("resultContent");
+        const resultFooter = document.getElementById("resultFooter");
+
+        // Các biến hiển thị kết quả
+        const bmiValue = document.getElementById("bmiValue");
+        const bmiStatus = document.getElementById("bmiStatus");
+        const bmrValue = document.getElementById("bmrValue");
+        const tdeeValue = document.getElementById("tdeeValue");
+        const targetCalorieLabel =
+          document.getElementById("targetCalorieLabel");
+
+        const proteinText = document.getElementById("proteinText");
+        const carbsText = document.getElementById("carbsText");
+        const fatsText = document.getElementById("fatsText");
+
+        const proteinBar = document.getElementById("proteinBar");
+        const carbsBar = document.getElementById("carbsBar");
+        const fatsBar = document.getElementById("fatsBar");
+        const adviceText = document.getElementById("adviceText");
+
+        calculateBtn.addEventListener("click", () => {
+          // 1. Lấy dữ liệu đầu vào từ Form
+          const gender = document.getElementById("gender").value;
+          const age = parseInt(document.getElementById("age").value);
+          const height = parseFloat(document.getElementById("height").value);
+          const weight = parseFloat(document.getElementById("weight").value);
+          const activity = parseFloat(
+            document.getElementById("activity").value,
+          );
+          const goal = document.getElementById("goal").value;
+
+          // Kiểm tra tính hợp lệ của dữ liệu đầu vào
+          if (
+            !age ||
+            !height ||
+            !weight ||
+            age <= 0 ||
+            height <= 0 ||
+            weight <= 0
+          ) {
+            alert("請輸入正確且大於 0 的身體數據！");
+            return;
+          }
+
+          // 2. Thuật toán phép toán BMI
+          const heightInMeters = height / 100;
+          const bmi = (weight / (heightInMeters * heightInMeters)).toFixed(1);
+          bmiValue.innerText = bmi;
+
+          // Phân loại trạng thái BMI
+          if (bmi < 18.5) {
+            bmiStatus.innerText = "體重過輕 (Underweight)";
+            bmiStatus.className =
+              "inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 bg-amber-100 text-amber-800";
+          } else if (bmi >= 18.5 && bmi < 24) {
+            bmiStatus.innerText = "正常體態 (Normal)";
+            bmiStatus.className =
+              "inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 bg-emerald-100 text-emerald-800";
+          } else if (bmi >= 24 && bmi < 27) {
+            bmiStatus.innerText = "過重 (Overweight)";
+            bmiStatus.className =
+              "inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 bg-orange-100 text-orange-800";
+          } else {
+            bmiStatus.innerText = "肥胖 (Obese)";
+            bmiStatus.className =
+              "inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 bg-rose-100 text-rose-800";
+          }
+
+          // 3. Thuật toán tính BMR theo công thức chuẩn Mifflin-St Jeor
+          let bmr = 0;
+          if (gender === "male") {
+            bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+          } else {
+            bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+          }
+          bmrValue.innerText = Math.round(bmr);
+
+          // 4. Tính toán tiêu thụ TDEE
+          const tdee = Math.round(bmr * activity);
+          tdeeValue.innerText = tdee;
+
+          // 5. Điều chỉnh lượng Calo nạp vào dựa trên mục tiêu chiến lược Gym
+          let targetCalories = tdee;
+          let pRatio = 0.25,
+            cRatio = 0.5,
+            fRatio = 0.25; // Tỷ lệ dinh dưỡng mặc định (Maintain)
+          let advice = "";
+
+          if (goal === "lose") {
+            targetCalories = tdee - 400; // Thâm hụt calo để giảm mỡ
+            pRatio = 0.3;
+            cRatio = 0.45;
+            fRatio = 0.25; // Tăng đạm lên để giữ cơ
+            advice = `偵測到您的目標為【健康減脂】。系統已為您啟動每日 -400 kcal 的安全熱量赤字，建議每日攝取總量調整為 ${targetCalories} 大卡。宏量素已為您提高蛋白質比例（達 30%）以防肌肉流失，請保持高蛋白飲食並維持既有重訓強度。`;
+          } else if (goal === "gain") {
+            targetCalories = tdee + 300; // Thặng dư calo để tăng cơ
+            pRatio = 0.25;
+            cRatio = 0.55;
+            fRatio = 0.2; // Tăng tinh bột để đẩy tạ khỏe
+            advice = `偵測到您的目標為【高效增肌】。系統已為您配置每日 +300 kcal 的熱量盈餘，目標攝取量調升為 ${targetCalories} 大卡。碳水化合物比例已拉高（達 55%）提供充足肌糖原，請務必搭配漸進式超負荷重訓。`;
+          } else {
+            advice = `偵測到您的目標為【維持體態】。每日建議攝取熱量與您的消耗熱量平衡，維持在 ${targetCalories} 大卡即可。三大營養素維持平衡之完美黃金配比（25% 蛋白質、50% 碳水、25% 脂肪），適合長期維持與打造精實線條。`;
+          }
+
+          targetCalorieLabel.innerText = `目標建議攝取: ${targetCalories} kcal`;
+          adviceText.innerText = advice;
+
+          // 6. Tính toán khối lượng Gram dinh dưỡng chi tiết (1g Protein = 4kcal, 1g Carb = 4kcal, 1g Fat = 9kcal)
+          const pGram = Math.round((targetCalories * pRatio) / 4);
+          const cGram = Math.round((targetCalories * cRatio) / 4);
+          const fGram = Math.round((targetCalories * fRatio) / 9);
+
+          // Đẩy chữ hiển thị số liệu thực tế
+          proteinText.innerText = `${pGram}g (${Math.round(targetCalories * pRatio)} kcal)`;
+          carbsText.innerText = `${cGram}g (${Math.round(targetCalories * cRatio)} kcal)`;
+          fatsText.innerText = `${fGram}g (${Math.round(targetCalories * fRatio)} kcal)`;
+
+          // Đồng bộ độ dài của các thanh tiến trình biểu đồ tương ứng (%)
+          proteinBar.style.width = `${pRatio * 100}%`;
+          carbsBar.style.width = `${cRatio * 100}%`;
+          fatsBar.style.width = `${fRatio * 100}%`;
+
+          // 7. Hoạt cảnh mở khung kết quả mượt mà
+          resultPlaceholder.style.display = "none";
+          resultContent.classList.remove("hidden");
+          resultFooter.classList.remove("hidden");
+        });
+      });
+    </script>
+  </body>
+</html>
