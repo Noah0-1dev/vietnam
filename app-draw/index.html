@@ -3,135 +3,336 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>智能畫布 & QR 核心系統</title>
+    <title>智能畫布 & 雲端快碼 - Production Version</title>
+
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+      body {
+        transition:
+          background-color 0.4s ease,
+          color 0.3s ease;
+      }
+      .dark-mode-active {
+        background-color: #020617 !important;
+        color: #f8fafc !important;
+      }
+      .dark-mode-active .bg-white {
+        background-color: #0f172a !important;
+        border-color: #1e293b !important;
+      }
+      #canvas {
+        cursor: crosshair;
+        touch-action: none;
+      }
+    </style>
+
     <script>
-      if (localStorage.getItem("theme_level3") === "dark")
-        document.documentElement.classList.add("dark");
+      window.addEventListener("DOMContentLoaded", () => {
+        if (localStorage.getItem("theme_level3") === "dark") {
+          document.body.classList.add("dark-mode-active");
+        }
+      });
     </script>
   </head>
-  <body
-    class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen p-4 md:p-8 transition-colors duration-300"
-  >
+  <body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8 antialiased">
     <div class="max-w-6xl mx-auto">
       <a
         href="../index.html"
-        class="inline-flex items-center text-sm text-purple-600 dark:text-purple-400 font-bold mb-6 hover:underline"
-        >← 返回主入口總覽</a
+        class="inline-flex items-center text-sm text-indigo-600 dark:text-indigo-400 font-bold mb-6 hover:underline"
       >
+        ← 返回主入口總覽
+      </a>
 
       <div
-        class="bg-purple-50/60 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-900 rounded-2xl p-5 mb-8 text-xs md:text-sm text-slate-600 dark:text-slate-300 shadow-xs"
+        id="instructions"
+        class="bg-purple-50/60 border border-purple-200 rounded-2xl p-5 mb-8 text-xs md:text-sm text-slate-600 dark:text-slate-300 shadow-xs"
       >
-        <span
-          class="font-extrabold text-purple-700 dark:text-purple-400 block text-base mb-1.5"
-          >💡 Level 3 繪圖與二維碼系統指南</span
+        <h4
+          class="font-extrabold text-purple-700 dark:text-purple-400 block text-base mb-2 flex items-center gap-2"
         >
-        <li>
-          使用滑鼠或移動設備觸控可在畫布上任意作畫，下方工具列可自由切換飽和度色彩與調整筆跡線徑。
-        </li>
-        <li>
-          在右側文字槽輸入 URL 後，系統除了即時編碼生成 QR
-          Code，還為您解鎖了本地圖檔導出按鈕。
-        </li>
+          <span>💡</span> 雲端繪圖與手機掃描連動指南（正式網路版）
+        </h4>
+        <ul class="list-decimal pl-4 space-y-1.5 leading-relaxed">
+          <li>
+            <strong class="text-purple-600 dark:text-purple-400"
+              >第一步：</strong
+            >在左側白板區域進行手繪塗鴉。
+          </li>
+          <li>
+            <strong class="text-purple-600 dark:text-purple-400"
+              >第二步：</strong
+            >繪圖完成後，點擊「<span class="font-semibold text-amber-600"
+              >轉換為 QR 碼</span
+            >」。系統會將畫作即時匿名上傳至雲端圖片伺服器。
+          </li>
+          <li>
+            <strong class="text-emerald-600 dark:text-emerald-400 font-bold"
+              >第三步（核心功能）：</strong
+            >上傳成功後，右側輸入框會自動填入該圖片在網路上的<span
+              class="font-semibold"
+              >真實 URL 網址</span
+            >，並生成對應的 QR 碼。<span class="underline font-bold"
+              >此時請用手機相機掃描右側 QR
+              碼，手機便會直接打開並顯示您剛才在電腦上畫的那幅畫！</span
+            >
+          </li>
+        </ul>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div
-          class="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col items-center"
+          class="lg:col-span-2 bg-white border border-slate-200 p-6 rounded-3xl shadow-xl flex flex-col justify-between"
         >
-          <h3 class="text-lg font-bold mb-4 self-start flex items-center gap-2">
-            <span>🎨</span> 線上數位繪圖板 Base
-          </h3>
-          <canvas
-            id="paintCanvas"
-            width="650"
-            height="400"
-            class="bg-white rounded-2xl w-full shadow-inner border border-slate-200 dark:border-slate-700 cursor-crosshair touch-none"
-          ></canvas>
+          <div>
+            <h2 class="text-xl font-bold mb-4 text-slate-900">
+              🎨 線上數位繪圖板 Base
+            </h2>
+            <div
+              class="bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200/60 dark:border-slate-800 overflow-hidden relative"
+            >
+              <canvas id="canvas" class="w-full h-[400px] block"></canvas>
+              <div
+                id="uploadLoader"
+                class="absolute inset-0 bg-white/90 dark:bg-slate-950/90 flex flex-col items-center justify-center gap-3 z-30"
+                style="display: none"
+              >
+                <div
+                  class="w-10 h-10 border-4 border-purple-600 border-t-transparent rounded-full animate-spin"
+                ></div>
+                <p class="text-xs font-bold text-purple-600 tracking-wider">
+                  正在將畫作上傳至雲端伺服器，請稍候...
+                </p>
+              </div>
+            </div>
+          </div>
 
           <div
-            class="flex flex-wrap gap-4 mt-6 items-center justify-center w-full bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-200 dark:border-slate-800"
+            class="flex flex-wrap items-center justify-between gap-4 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800"
           >
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-mono text-slate-400">COLOR:</span>
-              <input
-                type="color"
-                id="colorPicker"
-                value="#7c3aed"
-                class="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-0"
-              />
+            <div class="flex items-center gap-6">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-slate-400">COLOR:</span>
+                <input
+                  type="color"
+                  id="colorPicker"
+                  value="#7c3aed"
+                  class="w-8 h-8 rounded-lg cursor-pointer border-none bg-transparent"
+                />
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-slate-400">THICKNESS:</span>
+                <input
+                  type="range"
+                  id="lineWidth"
+                  min="1"
+                  max="20"
+                  value="5"
+                  class="accent-purple-600 cursor-pointer"
+                />
+              </div>
             </div>
+
             <div class="flex items-center gap-2">
-              <span class="text-xs font-mono text-slate-400">THICKNESS:</span>
-              <input
-                type="range"
-                id="lineWidth"
-                min="1"
-                max="25"
-                value="6"
-                class="accent-purple-600"
-              />
-            </div>
-            <div class="flex gap-2 ml-auto">
               <button
                 id="clearBtn"
-                class="bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 px-4 py-2 text-xs font-bold rounded-xl hover:bg-rose-100 transition-all"
+                class="bg-rose-50 hover:bg-rose-100 text-rose-600 font-medium px-4 py-2 rounded-xl text-xs transition-all"
               >
                 清空畫布
               </button>
               <button
                 id="downloadBtn"
-                class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 text-xs font-bold rounded-xl transition-all shadow-md"
+                class="bg-purple-600 hover:bg-purple-700 text-white font-medium px-4 py-2 rounded-xl text-xs transition-all shadow-md"
               >
                 導出畫作 PNG
+              </button>
+              <button
+                id="canvasToQRBtn"
+                class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-4 py-2 rounded-xl text-xs transition-all shadow-md"
+              >
+                ✨ 轉換為 QR 碼
               </button>
             </div>
           </div>
         </div>
 
         <div
-          class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col justify-between"
+          class="bg-white border border-slate-200 p-6 rounded-3xl shadow-xl flex flex-col justify-between"
         >
           <div>
-            <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-              <span>✨</span> 智慧快碼轉換核心
-            </h3>
-            <input
-              type="text"
-              id="qrInput"
-              placeholder="請輸入網址或常規字串..."
-              class="w-full p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:border-purple-500 text-slate-900 dark:text-slate-100"
-            />
-            <button
-              id="genQrBtn"
-              class="w-full mt-4 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl text-sm shadow-md transition-all cursor-pointer"
-            >
-              矩陣邊碼化
-            </button>
+            <h2 class="text-xl font-bold mb-4 text-slate-900">
+              ✨ 智慧快碼轉換核心
+            </h2>
+            <div class="space-y-4">
+              <input
+                type="text"
+                id="qrInput"
+                placeholder="請輸入網址或常規字串..."
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+              />
+              <button
+                id="generateQRBtn"
+                class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl text-sm shadow-md"
+              >
+                矩陣邊碼化
+              </button>
+            </div>
           </div>
 
-          <div
-            class="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-4 my-6 min-h-56 bg-slate-50 dark:bg-slate-950"
-          >
+          <div class="mt-8 flex-grow flex flex-col justify-center items-center">
             <div
-              id="qrcode"
-              class="p-3 bg-white rounded-xl shadow-md hidden"
-            ></div>
-            <p id="qrPlaceholder" class="text-slate-400 text-xs font-light">
-              Awaiting Data Input...
-            </p>
-            <button
-              id="downloadQrBtn"
-              class="mt-4 bg-slate-800 dark:bg-slate-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all hidden cursor-pointer"
+              id="qrContainer"
+              class="p-4 bg-white border border-dashed border-slate-300 rounded-2xl w-full aspect-square flex items-center justify-center relative overflow-hidden"
             >
-              💾 下載二維碼圖片
-            </button>
+              <div
+                id="qrPlaceholder"
+                class="text-slate-400 text-xs font-light text-center"
+              >
+                Awaiting Data Input...
+              </div>
+              <div id="qrcode" class="hidden"></div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        const colorPicker = document.getElementById("colorPicker");
+        const lineWidth = document.getElementById("lineWidth");
+        const clearBtn = document.getElementById("clearBtn");
+        const downloadBtn = document.getElementById("downloadBtn");
+        const canvasToQRBtn = document.getElementById("canvasToQRBtn");
+        const uploadLoader = document.getElementById("uploadLoader");
+
+        const qrInput = document.getElementById("qrInput");
+        const generateQRBtn = document.getElementById("generateQRBtn");
+        const qrPlaceholder = document.getElementById("qrPlaceholder");
+        const qrcodeDiv = document.getElementById("qrcode");
+
+        let isDrawing = false;
+
+        function resizeCanvas() {
+          const rect = canvas.parentElement.getBoundingClientRect();
+          canvas.width = rect.width;
+          canvas.height = 400;
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        resizeCanvas();
+
+        function getPos(e) {
+          const rect = canvas.getBoundingClientRect();
+          const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+          const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+          return { x: clientX - rect.left, y: clientY - rect.top };
+        }
+
+        function startDrawing(e) {
+          isDrawing = true;
+          const pos = getPos(e);
+          ctx.beginPath();
+          ctx.moveTo(pos.x, pos.y);
+          ctx.strokeStyle = colorPicker.value;
+          ctx.lineWidth = lineWidth.value;
+          ctx.lineCap = "round";
+          ctx.lineJoin = "round";
+        }
+
+        function draw(e) {
+          if (!isDrawing) return;
+          e.preventDefault();
+          const pos = getPos(e);
+          ctx.lineTo(pos.x, pos.y);
+          ctx.stroke();
+        }
+
+        canvas.addEventListener("mousedown", startDrawing);
+        canvas.addEventListener("mousemove", draw);
+        window.addEventListener("mouseup", () => (isDrawing = false));
+        canvas.addEventListener("touchstart", startDrawing);
+        canvas.addEventListener("touchmove", draw);
+        window.addEventListener("touchend", () => (isDrawing = false));
+
+        clearBtn.addEventListener("click", () => {
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        });
+
+        downloadBtn.addEventListener("click", () => {
+          const link = document.createElement("a");
+          link.download = "canvas-art.png";
+          link.href = canvas.toDataURL();
+          link.click();
+        });
+
+        function generateQRCode(text) {
+          if (!text.trim()) return;
+          qrPlaceholder.style.display = "none";
+          qrcodeDiv.style.display = "block";
+          qrcodeDiv.innerHTML = "";
+          new QRCode(qrcodeDiv, {
+            text: text,
+            width: 220,
+            height: 220,
+            correctLevel: QRCode.CorrectLevel.M,
+          });
+        }
+
+        generateQRBtn.addEventListener("click", () =>
+          generateQRCode(qrInput.value),
+        );
+
+        // 🔥 CHỨC NĂNG CHÍNH: TẢI ẢNH LÊN INTERNET KHI ĐÃ ĐỂ TRÊN GITHUB PAGES
+        canvasToQRBtn.addEventListener("click", () => {
+          // Kiểm tra nếu đang chạy offline file:// thì cảnh báo giảng viên trước
+          if (window.location.protocol === "file:") {
+            alert(
+              "⚠️ 偵測到您目前是在本地端（file://）開啟此網頁。\n\n由於瀏覽器的 CORS 安全防護機制限制，本地端無法直接外連上傳圖片。請將本專案推送到 GitHub Pages 網址線上執行，即可實現「手機掃描立刻看圖」的完整雲端功能！\n\n（現在系統將暫時為您生成本地預覽）",
+            );
+            generateQRCode("https://github.com/Noah0-1dev/vietnam");
+            return;
+          }
+
+          uploadLoader.style.display = "flex"; // Hiện loading
+
+          const base64Image = canvas.toDataURL("image/png").split(",")[1];
+          const formData = new FormData();
+          formData.append("image", base64Image);
+
+          // Sử dụng API của ImgBB (Dịch vụ upload ảnh miễn phí toàn cầu cực mạnh và hợp lệ khi chạy trên giao diện https)
+          fetch(
+            "https://api.imgbb.com/1/upload?key=ef6456f34df7db9bd117eb80a13ee41a",
+            {
+              method: "POST",
+              body: formData,
+            },
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              uploadLoader.style.display = "none";
+              if (data.success) {
+                const imgUrl = data.data.url; // Link ảnh thật trên internet
+                qrInput.value = imgUrl;
+                generateQRCode(imgUrl);
+                alert(
+                  "🎉 雲端上傳成功！\n畫作已成功部署至圖片伺服器，現在用手機掃描右側 QR 碼，保證 100% 打開您剛才畫的圖！",
+                );
+              } else {
+                alert("❌ 圖片伺服器拒絕請求，請稍後再試。");
+              }
+            })
+            .catch((err) => {
+              uploadLoader.style.display = "none";
+              console.error(err);
+              alert("❌ 連線失敗，請檢查網路狀態。");
+            });
+        });
+      });
+    </script>
   </body>
 </html>
